@@ -1,3 +1,5 @@
+// Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
+//
 // Terminal-inspired theme system — framework-agnostic core. The palettes
 // themselves live in themes.css as [data-theme] blocks; this module owns the
 // theme catalog, persistence, and the imperative apply. The React binding lives

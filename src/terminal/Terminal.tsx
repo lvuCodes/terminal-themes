@@ -1,3 +1,5 @@
+// Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
+
 import "./Terminal.css";
 import { ANSI_SLOTS, slotTag, type Role } from "./ansi";
 import { AnsiModeToggle } from "./AnsiModeToggle";

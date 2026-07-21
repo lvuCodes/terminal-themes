@@ -1,3 +1,5 @@
+// Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
+
 import { useEffect, useState } from "react";
 import { applyAnsiMode, naturalAnsiMode, type AnsiMode, type ThemeId } from "./theme";
 

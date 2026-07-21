@@ -1,3 +1,5 @@
+// Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
+
 import "./back-link.css";
 
 // Back link to the author's home page. Overlays the page's top-left corner so

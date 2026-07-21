@@ -1,3 +1,5 @@
+// Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
+//
 // Terminal theme + ANSI color module. Drop this folder into any app: import
 // from here and the palette stylesheet loads as a side effect, then use
 // `useTheme` + `<ThemeSwitcher>` (React) or the vanilla core (`applyTheme`,

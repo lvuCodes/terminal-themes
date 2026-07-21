@@ -1,3 +1,5 @@
+// Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
+
 import "./App.css";
 import { ThemeSwitcher, useAnsiMode, useTheme } from "./theme";
 import { BackLink } from "./back-link";
