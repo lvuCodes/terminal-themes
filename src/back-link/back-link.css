@@ -1,0 +1,8 @@
+/* Back link. Imported by the BackLink component that owns it. Placement only —
+   the pill's skin is the shared .pill primitive in index.css. The page box is
+   fit-content, so the link anchors to the document rather than to it. */
+.back-nav {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
