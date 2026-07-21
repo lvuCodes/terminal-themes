@@ -1,0 +1,77 @@
+/* Sits at the end of the palette row, so it reads as acting on those swatches.
+   Styled from the theme's surface tokens rather than the ANSI slots — the
+   control must stay legible on every profile, including the ones where the half
+   it is switching to is deliberately hard to read. */
+.ansi-toggle {
+  display: inline-flex;
+  align-items: stretch;
+  align-self: center;
+  margin-left: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--code-bg);
+}
+
+.ansi-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  padding: 4px 8px;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* The live half-preview: the segment's own swatches on the surface that half is
+   meant to sit on, so "brighter colours ↔ darker theme" is shown, not asserted. */
+.ansi-toggle-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.ansi-toggle-dot {
+  width: 4px;
+  height: 8px;
+  border-radius: 1px;
+}
+
+.ansi-toggle-text {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  text-align: left;
+}
+
+.ansi-toggle-hint {
+  font-size: 0.62rem;
+  opacity: 0.72;
+}
+
+.ansi-toggle-btn + .ansi-toggle-btn {
+  border-left: 1px solid var(--border);
+}
+
+.ansi-toggle-btn:hover {
+  filter: brightness(1.12);
+}
+
+.ansi-toggle-btn.active {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+.ansi-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}

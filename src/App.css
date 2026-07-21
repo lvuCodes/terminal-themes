@@ -1,0 +1,65 @@
+.page {
+  width: fit-content;
+  max-width: 100%;
+  margin: 32px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  color: var(--text);
+}
+
+.tagline {
+  max-width: 56ch;
+  margin: 0 auto 20px;
+  text-align: center;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0 0;
+}
+
+.swatches {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 16px auto 0;
+}
+
+.swatch {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  width: 12%;
+}
+
+.swatch code {
+  font-size: 0.8em;
+}
+
+.chip {
+  width: 64px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.ramp {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 16px 0 0;
+}
+
+.ramp-cell {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  border-radius: 4px;
+  color: var(--on-accent);
+  font-family: var(--mono);
+  font-size: 0.85em;
+  width: 8%;
+}

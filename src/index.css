@@ -1,0 +1,68 @@
+/* The terminal theme palettes (--bg, --accent, --item-N, color-scheme, …) live
+   in the standalone theme module — see src/theme/themes.css. This file owns only
+   the site's base document styles, all derived from those palette tokens so they
+   track the active theme. */
+:root {
+  --sans: "Atkinson Hyperlegible Next", "B612", "IBM Plex Sans", "Lexend",
+    "Libertinus Sans", "Noto Sans", "Oxygen", system-ui, sans-serif;
+  --mono: "Atkinson Hyperlegible Mono", "B612 Mono", "IBM Plex Mono",
+    "Libertinus Mono", "Noto Sans Mono", "Nova Mono", "Oxygen Mono",
+    ui-monospace, monospace;
+
+  font: 16px/1.45 var(--sans);
+  color: var(--text-h);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  min-height: 100svh;
+}
+
+#root {
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-family: var(--sans);
+  font-weight: 500;
+  color: var(--text-h);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+h2 {
+  font-weight: 400;
+  margin: 12px 0 0;
+  text-align: center;
+}
+
+b {
+  font-weight: 500;
+}
+
+p {
+  margin: 0;
+}
+
+/* Native form controls don't inherit font-family — force the site font. */
+button,
+input,
+select,
+textarea {
+  font-family: var(--sans);
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--code-bg);
+  color: var(--text-h);
+}

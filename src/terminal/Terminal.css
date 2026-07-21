@@ -1,0 +1,171 @@
+/* The mock terminal window. Surfaces come from the active profile's theme
+   tokens; the content colors come from the ANSI slots, routed through the
+   --ansi-ui-* indirection so light profiles pick up the normal (0–7) half. */
+.term {
+  --role-text: var(--ansi-ui-text);
+  --role-dim: var(--ansi-ui-dim);
+  --role-claude: var(--ansi-ui-red);
+  --role-error: var(--ansi-ui-red);
+  --role-fast: var(--ansi-ui-red);
+  --role-success: var(--ansi-ui-green);
+  --role-warning: var(--ansi-ui-yellow);
+  --role-permission: var(--ansi-ui-blue);
+  --role-suggestion: var(--ansi-ui-blue);
+  --role-plan: var(--ansi-ui-cyan);
+  --role-auto-accept: var(--ansi-ui-magenta);
+  --role-bash-border: var(--ansi-ui-magenta);
+  /* Diff lines use the normal slots in both modes — see the reference. */
+  --role-diff-added: var(--ansi-2);
+  --role-diff-removed: var(--ansi-1);
+  --role-diff-added-word: var(--ansi-ui-green);
+  --role-diff-removed-word: var(--ansi-ui-red);
+
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.28);
+}
+
+.term-chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.term-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Traffic lights drawn from the palette itself rather than hard-coded. */
+.term-dot-close {
+  background: var(--ansi-9);
+}
+
+.term-dot-min {
+  background: var(--ansi-11);
+}
+
+.term-dot-max {
+  background: var(--ansi-10);
+}
+
+.term-chrome-title {
+  margin-left: 8px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+}
+
+.term-body {
+  padding: 16px 20px;
+  color: var(--role-text);
+  /* Long sample lines scroll inside the window instead of widening the page. */
+  overflow-x: auto;
+}
+
+.term-section + .term-section {
+  margin-top: 16px;
+  border-top: 1px dashed var(--border);
+  padding-top: 12px;
+}
+
+.term-section-label {
+  color: var(--role-dim);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+/* Slot tags — the [dark:light] pair printed beside each sample. */
+.term-tag {
+  color: var(--role-dim);
+  font-size: 0.72rem;
+  margin-left: 4px;
+  opacity: 0.8;
+}
+
+.term-sep {
+  color: var(--role-dim);
+  margin: 0 4px;
+}
+
+.term-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.term-slot {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.68rem;
+  /* Readable on both halves of the ramp without tracking each slot's luminance. */
+  color: #fff;
+  text-shadow: 0 0 3px #000, 0 0 1px #000;
+}
+
+.term-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.term-permission,
+.term-tool,
+.term-user {
+  display: grid;
+  gap: 2px;
+}
+
+.term-user-label {
+  font-size: 0.9em;
+}
+
+.term-diff-removed,
+.term-diff-added {
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+/* Faint row wash behind each diff line, mixed from the line's own color so it
+   tracks the profile instead of needing a per-theme tint. */
+.term-diff-removed {
+  background: color-mix(in srgb, var(--role-diff-removed) 18%, transparent);
+}
+
+.term-diff-added {
+  background: color-mix(in srgb, var(--role-diff-added) 18%, transparent);
+}
+
+.r-text { color: var(--role-text); }
+.r-dim { color: var(--role-dim); }
+.r-claude { color: var(--role-claude); }
+.r-error { color: var(--role-error); }
+.r-fast { color: var(--role-fast); }
+.r-success { color: var(--role-success); }
+.r-warning { color: var(--role-warning); }
+.r-permission { color: var(--role-permission); }
+.r-suggestion { color: var(--role-suggestion); }
+.r-plan { color: var(--role-plan); }
+.r-auto-accept { color: var(--role-auto-accept); }
+.r-bash-border { color: var(--role-bash-border); }
+.r-diff-added { color: var(--role-diff-added); }
+.r-diff-removed { color: var(--role-diff-removed); }
+.r-diff-added-word { color: var(--role-diff-added-word); }
+.r-diff-removed-word { color: var(--role-diff-removed-word); }
