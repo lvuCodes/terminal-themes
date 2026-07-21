@@ -45,4 +45,22 @@ describe("App", () => {
     expect(container.querySelectorAll(".ramp-cell")).toHaveLength(11);
     expect(container.querySelectorAll(".swatch")).toHaveLength(8);
   });
+
+  it("credits the author and links this repo's own licence, in a footer with no switcher", () => {
+    const { container } = render(<App />);
+    const footer = container.querySelector("footer.credits")!;
+    expect(footer.querySelector(".theme-bar")).toBeNull();
+    expect(container.querySelectorAll(".theme-bar")).toHaveLength(1);
+
+    const links = [...footer.querySelectorAll("a")];
+    expect(links.map((a) => a.getAttribute("href"))).toEqual([
+      "https://github.com/lvuCodes",
+      "https://github.com/lvuCodes/terminal-themes/blob/main/LICENSE",
+    ]);
+    for (const a of links) {
+      expect(a.getAttribute("rel")).toBe("noreferrer noopener");
+      expect(a.getAttribute("target")).toBe("_blank");
+    }
+    expect(footer.textContent).toContain("GNU GPL v3");
+  });
 });

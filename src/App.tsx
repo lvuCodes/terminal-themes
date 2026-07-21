@@ -63,6 +63,24 @@ function App() {
           ))}
         </div>
       </section>
+
+      <footer className="credits">
+        <p className="credits-copyright">
+          © 2026{" "}
+          <a href="https://github.com/lvuCodes" target="_blank" rel="noreferrer noopener">
+            lvuCodes
+          </a>
+          . Free software under the{" "}
+          <a
+            href="https://github.com/lvuCodes/terminal-themes/blob/main/LICENSE"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            GNU GPL v3
+          </a>
+          .
+        </p>
+      </footer>
     </main>
   );
 }
