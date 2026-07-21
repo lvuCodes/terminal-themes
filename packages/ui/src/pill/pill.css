@@ -1,0 +1,18 @@
+/* The shared secondary-control pill. Components add their own class only for
+   layout (placement, centring) — never for the pill's own skin. */
+.pill {
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  color: var(--text-h);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pill:hover {
+  filter: brightness(1.12);
+}

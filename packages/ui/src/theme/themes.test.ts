@@ -15,9 +15,10 @@ const THEME_BLOCKS = [
   "novel",
   "silver-aerogel",
   "basic",
+  "lvucodes",
 ];
 
-const LIGHT_THEMES = ["man-page", "novel", "silver-aerogel", "basic"];
+const LIGHT_THEMES = ["man-page", "novel", "silver-aerogel", "basic", "lvucodes"];
 
 // Split the stylesheet into { selectorList, body } rules. Needed because several
 // ids appear in both their own block and a grouped override, so matching on the

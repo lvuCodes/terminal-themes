@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import mainSource from "../main.tsx?raw";
-import pkg from "../../package.json";
+import mainSource from "./main.tsx?raw";
+import pkg from "../package.json";
 
 // Regression guard for a bug that shipped a completely unstyled production site.
 //
@@ -14,7 +14,7 @@ import pkg from "../../package.json";
 // the palette must be imported from the entry module, which is never shaken.
 describe("theme stylesheet bundling", () => {
   it("imports the palette from the entry module, not only the barrel", () => {
-    expect(mainSource).toMatch(/import\s+["']\.\/theme\/themes\.css["']/);
+    expect(mainSource).toMatch(/import\s+["']@lvucodes\/ui\/theme\.css["']/);
   });
 
   it("keeps the sideEffects allowlist that strips the dev folder", () => {

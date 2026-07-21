@@ -15,7 +15,8 @@ export type ThemeId =
   | "man-page"
   | "novel"
   | "silver-aerogel"
-  | "basic";
+  | "basic"
+  | "lvucodes";
 
 export interface ThemeOption {
   id: ThemeId;
@@ -34,6 +35,7 @@ export const THEMES: readonly ThemeOption[] = [
   { id: "novel", label: "Novel" },
   { id: "silver-aerogel", label: "Silver" },
   { id: "basic", label: "Basic" },
+  { id: "lvucodes", label: "lvuCodes" },
 ];
 
 export const DEFAULT_THEME: ThemeId = "grass";
@@ -90,6 +92,7 @@ export const LIGHT_THEMES: readonly ThemeId[] = [
   "novel",
   "silver-aerogel",
   "basic",
+  "lvucodes",
 ];
 
 // The half a profile uses when nothing is forced — the default the CSS already

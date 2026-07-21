@@ -1,0 +1,77 @@
+{
+  "name": "@lvucodes/ui",
+  "version": "0.1.0",
+  "description": "Shared UI for the lvucodes.github.io sites: terminal theme palettes, theme switcher, back link, footer credits, and the shared lint configs.",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lvuCodes/terminal-themes.git",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://lvucodes.github.io/terminal-themes/",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./theme.css": "./dist/theme/themes.css",
+    "./se-smoke": {
+      "types": "./dist/se-smoke/index.d.ts",
+      "default": "./dist/se-smoke/index.js"
+    },
+    "./eslint": "./eslint.config.js",
+    "./stylelint": "./stylelint.json",
+    "./prettier": "./prettier.json"
+  },
+  "files": [
+    "dist",
+    "eslint.config.js",
+    "stylelint.json",
+    "prettier.json"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/copy-css.mjs",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "verify": "npm run lint && npm run test:coverage && npm run build"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.12.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitest/coverage-v8": "^4.1.10",
+    "eslint": "^10.3.0",
+    "jsdom": "^29.1.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "typescript": "~6.0.2",
+    "vitest": "^4.1.7"
+  },
+  "peerDependencies": {
+    "@playwright/test": ">=1.40",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@playwright/test": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "stylelint-config-standard": "^40.0.0",
+    "typescript-eslint": "^8.59.2"
+  }
+}

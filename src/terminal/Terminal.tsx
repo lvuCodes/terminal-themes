@@ -3,7 +3,7 @@
 import "./Terminal.css";
 import { ANSI_SLOTS, slotTag, type Role } from "./ansi";
 import { AnsiModeToggle } from "./AnsiModeToggle";
-import type { AnsiMode } from "../theme";
+import type { AnsiMode } from "@lvucodes/ui";
 
 // A mock terminal window that renders the Claude Code UI elements the reference
 // catalogs, each drawn in the ANSI slot it actually uses. Everything is styled

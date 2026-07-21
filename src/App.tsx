@@ -1,8 +1,7 @@
 // Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
 
 import "./App.css";
-import { ThemeSwitcher, useAnsiMode, useTheme } from "./theme";
-import { BackLink } from "./back-link";
+import { BackLink, FooterCredits, ThemeSwitcher, useAnsiMode, useTheme } from "@lvucodes/ui";
 import { Terminal } from "./terminal";
 
 const SURFACE_TOKENS = [
@@ -34,7 +33,7 @@ function App() {
 
       <h1>Terminal Themes</h1>
       <p className="tagline">
-        Nine macOS-Terminal-inspired palettes as plain CSS custom properties, applied via{" "}
+        Ten macOS-Terminal-inspired palettes as plain CSS custom properties, applied via{" "}
         <code>&lt;html data-theme&gt;</code>.
       </p>
 
@@ -70,23 +69,10 @@ function App() {
         </div>
       </section>
 
-      <footer className="credits">
-        <p className="credits-copyright">
-          © 2026{" "}
-          <a href="https://github.com/lvuCodes" target="_blank" rel="noreferrer noopener">
-            lvuCodes
-          </a>
-          . Free software under the{" "}
-          <a
-            href="https://github.com/lvuCodes/terminal-themes/blob/main/LICENSE"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            GNU GPL v3
-          </a>
-          .
-        </p>
-      </footer>
+      <FooterCredits
+        licenseHref="https://github.com/lvuCodes/terminal-themes/blob/main/LICENSE"
+        year={2026}
+      />
     </main>
   );
 }

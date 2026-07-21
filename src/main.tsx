@@ -14,19 +14,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-// The package.json `sideEffects` allowlist marks first-party modules pure so
-// unused source tree-shakes out of production. Rollup does not honour those
-// globs for app source, so the theme barrel's own `import "./themes.css"` gets
-// dropped from the bundle — the palette must be pulled in from the entry, which
-// is never shaken, or the built site ships with no colour tokens at all.
-import './theme/themes.css'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+// The palette is imported from the entry module, which is never tree-shaken.
+// When the theme lived in app source, Rollup ignored the `sideEffects` globs
+// and dropped the barrel's own CSS import, shipping a site with no colour
+// tokens; the package's own sideEffects field protects it now, but the entry
+// import stays as the belt-and-braces guard (pinned by bundling.test.ts).
+import "@lvucodes/ui/theme.css";
+import "./index.css";
+import App from "./App.tsx";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />
   </StrictMode>,
-)
+);

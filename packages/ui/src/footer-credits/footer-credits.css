@@ -1,0 +1,22 @@
+/* Footer credits. Imported by the FooterCredits component that owns it. */
+.credits {
+  margin: 32px 0 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.credits-copyright {
+  margin: 16px 0 0;
+  text-align: center;
+}
+
+.credits a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.credits a:hover {
+  text-decoration: underline;
+}

@@ -27,7 +27,7 @@ function stubStorage(initial: Record<string, string> = {}) {
 }
 
 describe("THEMES catalog", () => {
-  it("lists all nine themes with grass first as the default", () => {
+  it("lists all ten themes with grass first as the default", () => {
     expect(THEMES.map((t) => t.id)).toEqual([
       "grass",
       "homebrew",
@@ -38,6 +38,7 @@ describe("THEMES catalog", () => {
       "novel",
       "silver-aerogel",
       "basic",
+      "lvucodes",
     ]);
     expect(DEFAULT_THEME).toBe("grass");
     expect(THEMES[0].id).toBe(DEFAULT_THEME);
@@ -74,7 +75,8 @@ describe("loadTheme", () => {
   });
 
   it("returns the default when localStorage is unavailable", () => {
-    // No stub — referencing the missing global throws, which loadTheme swallows.
+    // Stub the global away — referencing it throws, which loadTheme swallows.
+    vi.stubGlobal("localStorage", undefined);
     expect(loadTheme()).toBe(DEFAULT_THEME);
   });
 });
@@ -88,6 +90,7 @@ describe("saveTheme", () => {
   });
 
   it("does not throw when storage is unavailable", () => {
+    vi.stubGlobal("localStorage", undefined);
     expect(() => saveTheme("pro")).not.toThrow();
   });
 });

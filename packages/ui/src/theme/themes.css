@@ -86,7 +86,8 @@
 [data-theme="man-page"],
 [data-theme="novel"],
 [data-theme="silver-aerogel"],
-[data-theme="basic"] {
+[data-theme="basic"],
+[data-theme="lvucodes"] {
   --ansi-ui-red: var(--ansi-1);
   --ansi-ui-green: var(--ansi-2);
   --ansi-ui-yellow: var(--ansi-3);
@@ -219,12 +220,26 @@
   --on-accent: #fff;
 }
 
+/* The house theme: purple accent on a base sitting between Basic and Silver. */
+[data-theme="lvucodes"] {
+  color-scheme: light;
+  --bg: #e0e0e0;
+  --panel: #d0d0d0;
+  --code-bg: #c8c8c8;
+  --text: #3c3c3c;
+  --text-h: #000000;
+  --border: rgba(0, 0, 0, 0.22);
+  --accent: #7b1fa2;
+  --on-accent: #fff;
+}
+
 /* Light themes get the darker "normal" ANSI item ramp so rings and swatches
    stay legible on pale backgrounds (the bright defaults wash out). */
 [data-theme="man-page"],
 [data-theme="novel"],
 [data-theme="silver-aerogel"],
-[data-theme="basic"] {
+[data-theme="basic"],
+[data-theme="lvucodes"] {
   --item-0: #1565c0;  /* blue */
   --item-1: #8a6d00;  /* dark gold */
   --item-2: #c2185b;  /* magenta */

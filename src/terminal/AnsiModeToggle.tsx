@@ -1,7 +1,7 @@
 // Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
 
 import "./AnsiModeToggle.css";
-import type { AnsiMode } from "../theme";
+import type { AnsiMode } from "@lvucodes/ui";
 
 // Switches which half of the ANSI palette the panel draws from. Deliberately a
 // two-segment control with both a preview and the word visible at rest rather
@@ -25,8 +25,22 @@ interface Option {
 }
 
 const OPTIONS = [
-  { mode: "dark", label: "Bright", hint: "for dark themes", slots: "8–15", swatches: [9, 10, 12], surface: 0 },
-  { mode: "light", label: "Normal", hint: "for light themes", slots: "0–7", swatches: [1, 2, 4], surface: 15 },
+  {
+    mode: "dark",
+    label: "Bright",
+    hint: "for dark themes",
+    slots: "8–15",
+    swatches: [9, 10, 12],
+    surface: 0,
+  },
+  {
+    mode: "light",
+    label: "Normal",
+    hint: "for light themes",
+    slots: "0–7",
+    swatches: [1, 2, 4],
+    surface: 15,
+  },
 ] as const satisfies readonly Option[];
 
 function Preview({ swatches, surface }: Pick<Option, "swatches" | "surface">) {
@@ -37,7 +51,11 @@ function Preview({ swatches, surface }: Pick<Option, "swatches" | "surface">) {
       aria-hidden="true"
     >
       {swatches.map((slot) => (
-        <span key={slot} className="ansi-toggle-dot" style={{ background: `var(--ansi-${slot})` }} />
+        <span
+          key={slot}
+          className="ansi-toggle-dot"
+          style={{ background: `var(--ansi-${slot})` }}
+        />
       ))}
     </span>
   );

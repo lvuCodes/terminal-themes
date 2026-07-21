@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
-import { DEFAULT_THEME, THEMES, THEME_STORAGE_KEY } from "./theme";
+import { DEFAULT_THEME, THEMES, THEME_STORAGE_KEY } from "@lvucodes/ui";
 
 // RTL's automatic cleanup only runs under vitest `globals: true`; unmount
 // explicitly so renders don't stack across tests.
@@ -16,9 +16,9 @@ describe("App", () => {
       expect(screen.getByRole("button", { name: t.label })).toBeTruthy();
     }
     const active = THEMES.find((t) => t.id === DEFAULT_THEME)!;
-    expect(
-      screen.getByRole("button", { name: active.label }).classList.contains("active"),
-    ).toBe(true);
+    expect(screen.getByRole("button", { name: active.label }).classList.contains("active")).toBe(
+      true,
+    );
   });
 
   it("applies and persists the theme picked from the switcher", async () => {
@@ -27,9 +27,7 @@ describe("App", () => {
 
     expect(document.documentElement.dataset.theme).toBe("ocean");
     expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe("ocean");
-    expect(screen.getByRole("button", { name: "Ocean" }).classList.contains("active")).toBe(
-      true,
-    );
+    expect(screen.getByRole("button", { name: "Ocean" }).classList.contains("active")).toBe(true);
   });
 
   it("restores the persisted theme on mount", () => {
