@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "vite --open",
     "build": "tsc -b && vite build",
+    "verify": "npm test && npm run build",
+    "prepare": "git config core.hooksPath .githooks",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",

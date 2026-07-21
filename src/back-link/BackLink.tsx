@@ -4,9 +4,12 @@ import "./back-link.css";
 
 // Back link to the author's home page. Overlays the page's top-left corner so
 // it never displaces the content below it.
+export const DEFAULT_HREF = "https://lvucodes.github.io";
+export const DEFAULT_LABEL = "← lvuCodes";
+
 export function BackLink({
-  href = "https://lvucodes.github.io",
-  label = "← lvuCodes",
+  href = DEFAULT_HREF,
+  label = DEFAULT_LABEL,
 }: {
   href?: string;
   label?: string;
