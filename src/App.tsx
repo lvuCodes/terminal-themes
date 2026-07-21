@@ -17,9 +17,9 @@ const SURFACE_TOKENS = [
 ];
 
 const RAMP_TOKENS = [
-  ...Array.from({ length: 10 }, (_, i) => ({
-    token: `--item-${i + 1}`,
-    label: String(i + 1),
+  ...Array.from({ length: 11 }, (_, i) => ({
+    token: `--item-${i}`,
+    label: String(i),
   })),
   { token: "--item-forced", label: "forced" },
 ];
@@ -59,7 +59,11 @@ function App() {
         <h2>Categorical ramp</h2>
         <div className="ramp">
           {RAMP_TOKENS.map((t) => (
-            <div key={t.token} className="ramp-cell" style={{ background: `var(${t.token})` }}>
+            <div
+              key={t.token}
+              className={`ramp-cell${t.label === "forced" ? " ramp-cell-forced" : ""}`}
+              style={{ background: `var(${t.token})` }}
+            >
               {t.label}
             </div>
           ))}
@@ -88,3 +92,5 @@ function App() {
 }
 
 export default App;
+
+// dark -

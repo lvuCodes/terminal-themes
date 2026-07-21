@@ -6,7 +6,7 @@ import "./back-link.css";
 // it never displaces the content below it.
 export function BackLink({
   href = "https://lvucodes.github.io",
-  label = "← Home",
+  label = "← lvuCodes",
 }: {
   href?: string;
   label?: string;

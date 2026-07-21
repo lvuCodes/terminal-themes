@@ -75,7 +75,7 @@
   overflow-x: auto;
 }
 
-.term-section + .term-section {
+.term-section+.term-section {
   margin-top: 16px;
   border-top: 1px dashed var(--border);
   padding-top: 12px;
@@ -101,16 +101,32 @@
   margin: 0 4px;
 }
 
+/* Column counts divide 16 evenly, so every swatch row is full and no slot ends
+   up a different width from its neighbours. */
 .term-palette {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  justify-content: center;
   gap: 4px;
+}
+
+@media (max-width: 480px) {
+  .term-palette {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Takes the whole first line so the swatch grid stays one unbroken block. */
+.term-palette-toggle {
+  display: flex;
+  justify-content: center;
+  grid-column: 1 / -1;
 }
 
 .term-slot {
   display: grid;
   place-items: center;
-  width: 40px;
+  min-width: 40px;
   height: 28px;
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -153,19 +169,66 @@
   background: color-mix(in srgb, var(--role-diff-added) 18%, transparent);
 }
 
-.r-text { color: var(--role-text); }
-.r-dim { color: var(--role-dim); }
-.r-claude { color: var(--role-claude); }
-.r-error { color: var(--role-error); }
-.r-fast { color: var(--role-fast); }
-.r-success { color: var(--role-success); }
-.r-warning { color: var(--role-warning); }
-.r-permission { color: var(--role-permission); }
-.r-suggestion { color: var(--role-suggestion); }
-.r-plan { color: var(--role-plan); }
-.r-auto-accept { color: var(--role-auto-accept); }
-.r-bash-border { color: var(--role-bash-border); }
-.r-diff-added { color: var(--role-diff-added); }
-.r-diff-removed { color: var(--role-diff-removed); }
-.r-diff-added-word { color: var(--role-diff-added-word); }
-.r-diff-removed-word { color: var(--role-diff-removed-word); }
+.r-text {
+  color: var(--role-text);
+}
+
+.r-dim {
+  color: var(--role-dim);
+}
+
+.r-claude {
+  color: var(--role-claude);
+}
+
+.r-error {
+  color: var(--role-error);
+}
+
+.r-fast {
+  color: var(--role-fast);
+}
+
+.r-success {
+  color: var(--role-success);
+}
+
+.r-warning {
+  color: var(--role-warning);
+}
+
+.r-permission {
+  color: var(--role-permission);
+}
+
+.r-suggestion {
+  color: var(--role-suggestion);
+}
+
+.r-plan {
+  color: var(--role-plan);
+}
+
+.r-auto-accept {
+  color: var(--role-auto-accept);
+}
+
+.r-bash-border {
+  color: var(--role-bash-border);
+}
+
+.r-diff-added {
+  color: var(--role-diff-added);
+}
+
+.r-diff-removed {
+  color: var(--role-diff-removed);
+}
+
+.r-diff-added-word {
+  color: var(--role-diff-added-word);
+}
+
+.r-diff-removed-word {
+  color: var(--role-diff-removed-word);
+}

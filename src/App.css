@@ -1,13 +1,13 @@
 .page {
   width: fit-content;
   max-width: 100%;
-  margin: 32px auto;
-  padding: 0 20px;
+  margin: 48px 16px 32px;
   box-sizing: border-box;
   color: var(--text);
 }
 
 .tagline {
+  color: var(--text);
   max-width: 56ch;
   margin: 0 auto 20px;
   text-align: center;
@@ -21,18 +21,33 @@
   margin: 20px 0 0;
 }
 
+/* Column counts divide the eight tokens evenly, so no row is left short. */
 .swatches {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px;
   margin: 16px auto 0;
+}
+
+@media (max-width: 480px) {
+  .swatches {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .swatch {
   display: grid;
   justify-items: center;
   align-content: start;
-  width: 12%;
+  gap: 4px;
+  min-width: 0;
+}
+
+.swatch b,
+.swatch code {
+  max-width: 100%;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .swatch code {
@@ -40,16 +55,16 @@
 }
 
 .chip {
-  width: 64px;
+  width: 100%;
   height: 40px;
   border: 1px solid var(--border);
   border-radius: 4px;
 }
 
 .ramp {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  gap: 8px;
   margin: 16px 0 0;
 }
 
@@ -61,7 +76,42 @@
   color: var(--on-accent);
   font-family: var(--mono);
   font-size: 0.85em;
-  width: 8%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The only word-length label in the ramp — sized to sit on one line at the
+   cell's minimum width. */
+.ramp-cell-forced {
+  font-size: 0.6em;
+}
+
+.test-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.test-box {
+  width: 24px;
+  height: 24px;
+  /* border: 1px solid var(--border); */
+  border-radius: 4px;
+  margin: 4px
+}
+
+/* Both the box and the label paint --tok over --bg — the same stack body uses —
+   so a translucent token composites to the page colour instead of doubling. */
+.test-box,
+.test-row b {
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--tok), var(--tok));
+}
+
+.test-row b {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* ---- footer credits ---- */

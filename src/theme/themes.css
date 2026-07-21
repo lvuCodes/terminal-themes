@@ -8,7 +8,7 @@
      --text, --text-h           body text / heading (bright) text
      --border                   hairline border color
      --accent, --on-accent      accent fill / readable text on the accent
-     --item-1 … --item-10       ANSI-style categorical palette (indexed swatches)
+     --item-0 … --item-10       ANSI-style categorical palette (indexed swatches)
      --item-forced              extra "violet" slot outside the numbered ramp
    color-scheme flips light/dark per theme so native controls match.
 
@@ -29,16 +29,17 @@
   /* ANSI-style categorical palette — the BRIGHT set for dark themes; the light
      themes below swap in the darker "normal" set. --item-forced is an extra
      violet slot. Indexed by item number. */
-  --item-1: #5c9eff;  /* blue */
-  --item-2: #ffd23f;  /* yellow */
-  --item-3: #ff6ac1;  /* magenta */
-  --item-4: #5af78e;  /* green */
-  --item-5: #5ad4e6;  /* cyan */
-  --item-6: #c9a06a;  /* tan */
-  --item-7: #b8e62d;  /* lime */
-  --item-8: #ff9ec4;  /* pink */
-  --item-9: #8fd0ff;  /* sky */
-  --item-10: #2fd6b6; /* teal */
+  --item-0: #5c9eff;  /* blue */
+  --item-1: #ffd23f;  /* yellow */
+  --item-2: #ff6ac1;  /* magenta */
+  --item-3: #5af78e;  /* green */
+  --item-4: #5ad4e6;  /* cyan */
+  --item-5: #c9a06a;  /* tan */
+  --item-6: #b8e62d;  /* lime */
+  --item-7: #ff9ec4;  /* pink */
+  --item-8: #8fd0ff;  /* sky */
+  --item-9: #2fd6b6; /* teal */
+  --item-10: #ff9f45; /* orange */
   --item-forced: #c08bff; /* violet */
 
   color-scheme: dark;
@@ -52,7 +53,7 @@
      tokens above change per profile, exactly as in Terminal itself.
 
      Distinct from --item-N above: that ramp is a *categorical* palette tuned so
-     ten adjacent swatches stay tellable apart. These are the real ANSI slots,
+     eleven adjacent swatches stay tellable apart. These are the real ANSI slots,
      warts included (slot 4 blue is near-black, slot 15 washes out on light
      backgrounds) — faithfulness is the point, since the whole reason to look at
      them is to judge legibility per profile. */
@@ -224,15 +225,16 @@
 [data-theme="novel"],
 [data-theme="silver-aerogel"],
 [data-theme="basic"] {
-  --item-1: #1565c0;  /* blue */
-  --item-2: #8a6d00;  /* dark gold */
-  --item-3: #c2185b;  /* magenta */
-  --item-4: #1f8a3b;  /* green */
-  --item-5: #0e7c8a;  /* cyan */
-  --item-6: #8a5a2b;  /* brown */
-  --item-7: #5a8a00;  /* olive-lime */
-  --item-8: #b5497f;  /* pink */
-  --item-9: #1d74d8;  /* sky */
-  --item-10: #0a8f78; /* teal */
+  --item-0: #1565c0;  /* blue */
+  --item-1: #8a6d00;  /* dark gold */
+  --item-2: #c2185b;  /* magenta */
+  --item-3: #1f8a3b;  /* green */
+  --item-4: #0e7c8a;  /* cyan */
+  --item-5: #8a5a2b;  /* brown */
+  --item-6: #5a8a00;  /* olive-lime */
+  --item-7: #b5497f;  /* pink */
+  --item-8: #1d74d8;  /* sky */
+  --item-9: #0a8f78; /* teal */
+  --item-10: #b35c00; /* orange */
   --item-forced: #7b1fa2; /* violet */
 }

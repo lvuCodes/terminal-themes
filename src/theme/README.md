@@ -48,7 +48,7 @@ Style the host app with these custom properties — they resolve to the active t
 | `--text`, `--text-h` | Body text / heading (bright) text |
 | `--border` | Hairline border color |
 | `--accent`, `--on-accent` | Accent fill / readable text on the accent |
-| `--item-1` … `--item-10` | ANSI-style categorical ramp for indexed swatches |
+| `--item-0` … `--item-10` | ANSI-style categorical ramp for indexed swatches |
 | `--item-forced` | Extra violet slot outside the numbered ramp |
 | `--ansi-0` … `--ansi-15` | The true 16-slot ANSI palette (normal 0–7, bright 8–15) |
 | `--ansi-ui-red`, `-green`, `-yellow`, `-blue`, `-magenta`, `-cyan` | The half of the palette this profile's UI draws from |
@@ -56,7 +56,7 @@ Style the host app with these custom properties — they resolve to the active t
 
 ### `--item-N` vs. `--ansi-N`
 
-Two different palettes, deliberately. `--item-N` is a *categorical* ramp tuned so ten adjacent swatches stay tellable apart — reach for it when coloring indexed data. `--ansi-N` is the real ANSI palette, warts included (slot 4 blue is near-black, slot 15 washes out on pale backgrounds) — reach for it when emulating terminal output, where fidelity matters more than legibility.
+Two different palettes, deliberately. `--item-N` is a *categorical* ramp tuned so eleven adjacent swatches stay tellable apart — reach for it when coloring indexed data. `--ansi-N` is the real ANSI palette, warts included (slot 4 blue is near-black, slot 15 washes out on pale backgrounds) — reach for it when emulating terminal output, where fidelity matters more than legibility.
 
 Every profile modeled here ships with **zero** ANSI overrides in its macOS `.terminal` file — they customize background, foreground and cursor only, and all inherit the one stock 16-color set. So `--ansi-0` … `--ansi-15` are declared once and shared by every theme; only the surface tokens change per profile, exactly as in Terminal.
 

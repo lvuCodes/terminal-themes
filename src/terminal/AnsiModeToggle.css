@@ -1,4 +1,4 @@
-/* Sits at the end of the palette row, so it reads as acting on those swatches.
+/* Sits ahead of the palette swatches, so it reads as acting on those swatches.
    Styled from the theme's surface tokens rather than the ANSI slots — the
    control must stay legible on every profile, including the ones where the half
    it is switching to is deliberately hard to read. */
@@ -6,11 +6,11 @@
   display: inline-flex;
   align-items: stretch;
   align-self: center;
-  margin-left: 8px;
   border: 1px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
   background: var(--code-bg);
+  height: 32px;
 }
 
 .ansi-toggle-btn {
@@ -57,7 +57,7 @@
   opacity: 0.72;
 }
 
-.ansi-toggle-btn + .ansi-toggle-btn {
+.ansi-toggle-btn+.ansi-toggle-btn {
   border-left: 1px solid var(--border);
 }
 

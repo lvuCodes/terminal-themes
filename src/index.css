@@ -11,14 +11,18 @@
 
   font: 16px/1.45 var(--sans);
   color: var(--text-h);
-  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* --border is translucent in every profile — it is authored to sit on top of
+   that profile's --bg. Layering it over --bg here reproduces the border's real
+   colour instead of compositing it against the browser canvas. Declared on body
+   alone so it propagates to the canvas and is never painted twice. */
 body {
   margin: 0;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--border), var(--border));
   min-height: 100svh;
 }
 
@@ -32,13 +36,14 @@ h1 {
   font-family: var(--sans);
   font-weight: 500;
   color: var(--text-h);
-  margin-bottom: 12px;
+  margin-block: 0;
+  margin: 12px auto;
   text-align: center;
 }
 
 h2 {
   font-weight: 400;
-  margin: 12px 0 0;
+  margin: 0;
   text-align: center;
 }
 

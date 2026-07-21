@@ -75,11 +75,10 @@ describe("<AnsiModeToggle>", () => {
 });
 
 describe("toggle placement", () => {
-  it("sits inside the palette row, after the last slot", () => {
+  it("sits inside the palette row, ahead of the first slot", () => {
     const { container } = render(<Terminal ansiMode="dark" onAnsiModeChange={() => {}} />);
     const row = container.querySelector(".term-palette")!;
-    const last = row.children[row.children.length - 1];
-    expect(last.classList.contains("ansi-toggle")).toBe(true);
+    expect(row.children[0].querySelector(".ansi-toggle")).toBeTruthy();
     expect(row.querySelectorAll(".term-slot")).toHaveLength(16);
   });
 });

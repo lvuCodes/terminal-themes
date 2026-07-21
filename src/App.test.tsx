@@ -42,7 +42,7 @@ describe("App", () => {
     const { container } = render(<App />);
     expect(screen.getByText("--accent")).toBeTruthy();
     expect(screen.getByText("forced")).toBeTruthy();
-    expect(container.querySelectorAll(".ramp-cell")).toHaveLength(11);
+    expect(container.querySelectorAll(".ramp-cell")).toHaveLength(12);
     expect(container.querySelectorAll(".swatch")).toHaveLength(8);
   });
 
