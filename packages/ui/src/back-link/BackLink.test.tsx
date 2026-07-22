@@ -1,11 +1,18 @@
 // @vitest-environment jsdom
 import { cleanup, render, screen } from "@testing-library/react";
+import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it } from "vitest";
 import { BackLink, BACK_LINK_DEFAULT_HREF, BACK_LINK_DEFAULT_LABEL } from "./BackLink";
 
 afterEach(cleanup);
 
 describe("BackLink", () => {
+  it("imports the pill skin itself — a barrel side-effect import gets tree-shaken", () => {
+    // cwd-relative: under the jsdom environment import.meta.url is not a file: URL.
+    const source = readFileSync("src/back-link/BackLink.tsx", "utf8");
+    expect(source).toContain('import "../pill/pill.css"');
+  });
+
   it("points at the author's home page by default", () => {
     render(<BackLink />);
     const link = screen.getByRole("link", { name: BACK_LINK_DEFAULT_LABEL });

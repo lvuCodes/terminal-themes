@@ -1,11 +1,11 @@
 // Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
 //
-// @lvucodes/ui — shared UI for the lvucodes.github.io sites. Importing this
-// barrel loads the palette stylesheet and the shared .pill primitive as side
-// effects; the theme system, BackLink and FooterCredits come with it. The
-// iPhone SE smoke spec lives behind the ./se-smoke subpath so Playwright stays
-// out of app bundles.
-import "./pill/pill.css";
+// @lvucodes/ui — shared UI for the lvucodes.github.io sites. Every stylesheet
+// is imported by the component that wears it, never by this barrel: a barrel
+// side-effect import gets tree-shaken in workspace builds even with the
+// sideEffects globs (Rollup skips them for symlinked source), which is how the
+// showcase once shipped a skinless back-link pill. The iPhone SE smoke spec
+// lives behind the ./se-smoke subpath so Playwright stays out of app bundles.
 
 export { BackLink, BACK_LINK_DEFAULT_HREF, BACK_LINK_DEFAULT_LABEL } from "./back-link";
 export {
