@@ -100,4 +100,13 @@ describe("themes.css", () => {
       expect(ownBlock(themesCss, id), id).toContain("color-scheme: light");
     }
   });
+
+  it("hides the caret globally and restores it only inside editable fields", () => {
+    const all = rules(themesCss).find((r) => r.selector === "*");
+    expect(all?.body).toContain("caret-color: transparent");
+    const editable = rules(themesCss).find(
+      (r) => r.selector === "input, textarea, select, [contenteditable]",
+    );
+    expect(editable?.body).toContain("caret-color: auto");
+  });
 });

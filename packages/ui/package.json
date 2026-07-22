@@ -1,6 +1,6 @@
 {
   "name": "@lvucodes/ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shared UI for the lvucodes.github.io sites: terminal theme palettes, theme switcher, back link, footer credits, and the shared lint configs.",
   "license": "GPL-3.0-or-later",
   "type": "module",

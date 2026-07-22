@@ -253,3 +253,16 @@
   --item-10: #b35c00; /* orange */
   --item-forced: #7b1fa2; /* violet */
 }
+
+/* The text caret is noise anywhere it can't be typed into — hide it globally
+   and restore it only inside editable fields. */
+* {
+  caret-color: transparent;
+}
+
+input,
+textarea,
+select,
+[contenteditable] {
+  caret-color: auto;
+}
