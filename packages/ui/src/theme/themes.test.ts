@@ -101,6 +101,14 @@ describe("themes.css", () => {
     }
   });
 
+  it("draws the lvucodes palette from the logo colours on the Basic template", () => {
+    const block = ownBlock(themesCss, "lvucodes");
+    expect(block).toMatch(/--accent:\s*#0957fe/);
+    expect(block).toMatch(/--text:\s*#41464f/);
+    expect(block).toMatch(/--bg:\s*#f5f8ff/);
+    expect(block).toMatch(/--on-accent:\s*#fff/);
+  });
+
   it("hides the caret globally and restores it only inside editable fields", () => {
     const all = rules(themesCss).find((r) => r.selector === "*");
     expect(all?.body).toContain("caret-color: transparent");
