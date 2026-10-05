@@ -7,7 +7,7 @@ export default defineConfig({
   base: "./",
   plugins: [react()],
   // Writing a coverage report otherwise storms the dev server with reloads.
-  server: { watch: { ignored: ["**/coverage/**", "**/dist/**"] } },
+  server: { port: 5818, watch: { ignored: ["**/coverage/**", "**/dist/**"] } },
   test: {
     // Site tests only — the package runs its own suite via its workspace, and
     // e2e/ belongs to Playwright.

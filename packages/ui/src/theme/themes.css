@@ -220,16 +220,18 @@
   --on-accent: #fff;
 }
 
-/* The house theme: purple accent on a base sitting between Basic and Silver. */
+/* The house theme: Basic as the template, tinted from the cat logo. Surfaces
+   take the logo's cornflower field (#6d9eff), text keeps Basic's neutral grey
+   with a cool blue cast, and the accent is the flower blue (#0957fe). */
 [data-theme="lvucodes"] {
   color-scheme: light;
-  --bg: #e0e0e0;
-  --panel: #d0d0d0;
-  --code-bg: #c8c8c8;
-  --text: #3c3c3c;
-  --text-h: #000000;
-  --border: rgba(0, 0, 0, 0.22);
-  --accent: #7b1fa2;
+  --bg: #f5f8ff;
+  --panel: #e6eeff;
+  --code-bg: #d9e5ff;
+  --text: #41464f;
+  --text-h: #1a1d24;
+  --border: rgba(26, 29, 36, 0.2);
+  --accent: #0957fe;
   --on-accent: #fff;
 }
 
