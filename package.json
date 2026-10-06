@@ -31,7 +31,7 @@
   "dependencies": {
     "@lvucodes/ui": "^0.1.0",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
