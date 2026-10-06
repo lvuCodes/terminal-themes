@@ -9,6 +9,10 @@ name: Site CI
 #
 # Expects the repo to define `npm run verify` (the full local gate set) and
 # `npm run smoke` (the Playwright iPhone SE suite, building the site first).
+#
+# Jobs skip on draft PRs, and on a Dependabot PR's opening event since
+# dependabot-draft.yml converts it to a draft. Consumers add `ready_for_review`
+# to their `pull_request` types so CI runs once a PR is marked ready.
 
 on:
   workflow_call:
@@ -19,6 +23,11 @@ on:
 
 jobs:
   verify:
+    if: >-
+      github.event_name != 'pull_request' ||
+      (!github.event.pull_request.draft &&
+       !(github.event.pull_request.user.login == 'dependabot[bot]' &&
+         contains(fromJSON('["opened", "reopened"]'), github.event.action)))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +39,11 @@ jobs:
       - run: npm run verify
 
   se-smoke:
+    if: >-
+      github.event_name != 'pull_request' ||
+      (!github.event.pull_request.draft &&
+       !(github.event.pull_request.user.login == 'dependabot[bot]' &&
+         contains(fromJSON('["opened", "reopened"]'), github.event.action)))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

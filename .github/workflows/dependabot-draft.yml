@@ -1,0 +1,28 @@
+name: Dependabot Draft
+
+# Reusable: converts a newly opened Dependabot PR to a draft, so site-ci.yml
+# skips it until it is marked ready for review. Consumers invoke it from a thin
+# workflow:
+#
+#   on:
+#     pull_request_target:
+#       types: [opened, reopened]
+#   permissions:
+#     pull-requests: write
+#   jobs:
+#     draft:
+#       uses: lvuCodes/terminal-themes/.github/workflows/dependabot-draft.yml@main
+
+on:
+  workflow_call:
+
+jobs:
+  draft:
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh pr ready --undo "$PR" --repo "$REPO"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
