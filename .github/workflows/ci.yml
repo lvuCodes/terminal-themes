@@ -17,6 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # The PR merge ref adds a synthetic merge with main, whose rebased copies of dev commits would make the report look stale.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
