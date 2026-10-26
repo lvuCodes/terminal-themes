@@ -1,0 +1,15 @@
+name: Weekly Dependency Canary
+
+on:
+  schedule:
+    - cron: "0 13 * * 1"
+  workflow_dispatch:
+
+jobs:
+  dependency-canary:
+    permissions:
+      contents: read
+      issues: write
+    uses: ./.github/workflows/dependency-canary.yml
+    with:
+      tools-ref: ${{ github.sha }}

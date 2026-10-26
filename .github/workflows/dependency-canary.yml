@@ -1,0 +1,126 @@
+name: Dependency Canary
+
+# Reusable weekly check that every npm dependency still passes the full gate set
+# at its newest version, so a breaking release surfaces before its Dependabot PR
+# is merged. Consumers invoke it from a thin scheduled workflow:
+#
+#   on:
+#     schedule:
+#       - cron: "0 13 * * 1"
+#     workflow_dispatch:
+#   jobs:
+#     dependency-canary:
+#       permissions:
+#         contents: read
+#         issues: write
+#       uses: lvuCodes/terminal-themes/.github/workflows/dependency-canary.yml@main
+#
+# Each directory in `directories` is updated with npm-check-updates, honouring
+# the matching `ignore` entries in .github/dependabot.yml, then installed in the
+# same order (refreshing its lockfile). `npm run verify` and `npm run smoke` then
+# run from the root, as site-ci.yml runs them. A failure opens, or comments on,
+# the "Dependency canary failing" issue, and a pass closes it.
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        default: "22"
+      directories:
+        description: Space-separated package directories to update, in install order.
+        type: string
+        default: "."
+      smoke:
+        type: boolean
+        default: true
+      tools-ref:
+        description: The terminal-themes ref that supplies scripts/dependency-canary.mjs.
+        type: string
+        default: main
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    env:
+      CANARY: ${{ github.workspace }}/canary-tools/scripts/dependency-canary.mjs
+      DIRECTORIES: ${{ inputs.directories }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          path: repo
+      - uses: actions/checkout@v4
+        with:
+          repository: lvuCodes/terminal-themes
+          ref: ${{ inputs.tools-ref }}
+          path: canary-tools
+          sparse-checkout: scripts/dependency-canary.mjs
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+      # Each step records its name and output first, so after a failure these
+      # files hold the failing step for the report.
+      - name: Update dependencies
+        working-directory: repo
+        run: |
+          echo "Update dependencies" > "$RUNNER_TEMP/canary-step"
+          if [ -f .github/dependabot.yml ]; then
+            yq -o=json .github/dependabot.yml > "$RUNNER_TEMP/dependabot.json"
+          fi
+          for dir in $DIRECTORIES; do
+            node "$CANARY" update "$dir" "$RUNNER_TEMP/dependabot.json"
+          done 2>&1 | tee "$RUNNER_TEMP/canary-step.log"
+          node "$CANARY" changes . >> "$GITHUB_STEP_SUMMARY"
+      - name: Install dependencies
+        working-directory: repo
+        run: |
+          echo "Install dependencies" > "$RUNNER_TEMP/canary-step"
+          for dir in $DIRECTORIES; do
+            (cd "$dir" && npm install --no-audit --no-fund)
+          done 2>&1 | tee "$RUNNER_TEMP/canary-step.log"
+      - name: Verify
+        working-directory: repo
+        run: |
+          echo "Verify" > "$RUNNER_TEMP/canary-step"
+          npm run verify 2>&1 | tee "$RUNNER_TEMP/canary-step.log"
+      - name: Smoke
+        if: inputs.smoke
+        working-directory: repo
+        run: |
+          echo "Smoke" > "$RUNNER_TEMP/canary-step"
+          {
+            npx playwright install --with-deps chromium
+            npm run smoke
+          } 2>&1 | tee "$RUNNER_TEMP/canary-step.log"
+      - name: Report failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          node "$CANARY" report repo "$RUNNER_TEMP/canary-step" "$RUNNER_TEMP/canary-step.log" > "$RUNNER_TEMP/canary-issue.md"
+          gh label create dependency-canary --color D93F0B --description "Weekly dependency canary failure" --force
+          number=$(gh issue list --label dependency-canary --state open --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file "$RUNNER_TEMP/canary-issue.md"
+          else
+            gh issue create --title "Dependency canary failing" --label dependency-canary --body-file "$RUNNER_TEMP/canary-issue.md"
+          fi
+      - name: Close canary issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          for number in $(gh issue list --label dependency-canary --state open --json number --jq '.[].number'); do
+            gh issue close "$number" --comment "The dependency canary passed: $RUN_URL"
+          done
