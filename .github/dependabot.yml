@@ -9,6 +9,10 @@ updates:
         update-types:
           - version-update:semver-major
     groups:
+      vitest:
+        patterns:
+          - vitest
+          - "@vitest/*"
       react:
         patterns:
           - react
