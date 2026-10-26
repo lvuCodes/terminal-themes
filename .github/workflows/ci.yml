@@ -10,3 +10,17 @@ on:
 jobs:
   site-ci:
     uses: ./.github/workflows/site-ci.yml
+
+  ai-attribution:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The PR merge ref adds a synthetic merge with main, whose rebased copies of dev commits would make the report look stale.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/ai-attribution.mjs --check

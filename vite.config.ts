@@ -11,7 +11,7 @@ export default defineConfig({
   test: {
     // Site tests only — the package runs its own suite via its workspace, and
     // e2e/ belongs to Playwright.
-    include: ["src/**/*.test.{ts,tsx}"],
+    include: ["src/**/*.test.{ts,tsx}", "scripts/**/*.test.mjs"],
     // Provide an in-memory localStorage for every test (see the setup file).
     // Test files opt into jsdom per-file via `// @vitest-environment jsdom`.
     setupFiles: ["./src/test-setup.ts"],
