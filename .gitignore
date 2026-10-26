@@ -28,3 +28,5 @@ coverage
 *.sw?
 playwright-report
 test-results
+
+.ai-attribution/snapshots/.tmp/

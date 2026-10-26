@@ -33,6 +33,10 @@ The site consumes the package through the npm workspace exactly the way external
 
 `dev` is the default working branch; CI runs there. `main` is deploy-only: a linear fast-forward from `dev` (gated on `verify` and the SE smoke suite being green) that triggers the Pages deploy.
 
+## AI Usage
+
+See [AI-USAGE.md](AI-USAGE.md).
+
 ## License
 
 GNU General Public License v3.0 or later — see [LICENSE](LICENSE). Copyright © 2026 lvuCodes.
