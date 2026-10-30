@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import mainSource from "./main.tsx?raw";
 import pkg from "../package.json";
+import indexHtml from "../index.html?raw";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 
 // Regression guard for a bug that shipped a completely unstyled production site.
 //
@@ -20,4 +23,14 @@ describe("theme stylesheet bundling", () => {
   it("keeps the sideEffects allowlist that strips the dev folder", () => {
     expect(pkg.sideEffects).toContain("**/*.css");
   });
+});
+
+describe("favicon", () => {
+  it.each(["favicon-32.png", "favicon-16.png", "apple-touch-icon.png"])(
+    "links %s from the head and ships it in public/",
+    (file) => {
+      expect(indexHtml).toMatch(new RegExp(`<link rel="(icon|apple-touch-icon)"[^>]*href="/${file}"`));
+      expect(existsSync(resolve(__dirname, "../public", file))).toBe(true);
+    },
+  );
 });

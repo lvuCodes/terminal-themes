@@ -105,7 +105,7 @@
    up a different width from its neighbours. */
 .term-palette {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(8, 1fr) auto;
   justify-content: center;
   gap: 4px;
 }
@@ -116,11 +116,22 @@
   }
 }
 
-/* Takes the whole first line so the swatch grid stays one unbroken block. */
+.term-slot:nth-child(8n + 1) {
+  grid-column-start: 1;
+}
+
 .term-palette-toggle {
   display: flex;
-  justify-content: center;
-  grid-column: 1 / -1;
+  grid-column: 9;
+  grid-row: 2;
+}
+
+@media (max-width: 480px) {
+  .term-palette-toggle {
+    justify-content: center;
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
 }
 
 .term-slot {

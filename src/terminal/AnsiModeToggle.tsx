@@ -3,17 +3,10 @@
 import "./AnsiModeToggle.css";
 import type { AnsiMode } from "@lvucodes/ui";
 
-// Switches which half of the ANSI palette the panel draws from. Deliberately a
-// two-segment control with both a preview and the word visible at rest rather
-// than a single icon-button that flips: at a glance it has to read as which half
-// is in use, and which one is currently on has to be obvious without hovering.
-//
-// The segment preview is the whole point of the control. A moon/sun pair is
-// ambiguous here — "dark" names the theme the half is *for*, not the colours,
-// and the colours run the other way (dark-ansi is the brighter half). Each
-// segment therefore renders three live swatches from its own half on the
-// background that half is meant to sit on, so the inversion is visible rather
-// than something the label has to argue for.
+// Switches which half of the ANSI palette the panel draws from: Dark uses the
+// bright slots (8–15), Light the normal slots (0–7). Each segment renders three
+// live swatches from its own half on the background that half is meant to sit
+// on, so the dark/light choice is shown rather than asserted by the label alone.
 
 interface Option {
   mode: AnsiMode;
@@ -27,16 +20,16 @@ interface Option {
 const OPTIONS = [
   {
     mode: "dark",
-    label: "Bright",
-    hint: "for dark themes",
+    label: "Dark",
+    hint: "bright 8–15",
     slots: "8–15",
     swatches: [9, 10, 12],
     surface: 0,
   },
   {
     mode: "light",
-    label: "Normal",
-    hint: "for light themes",
+    label: "Light",
+    hint: "normal 0–7",
     slots: "0–7",
     swatches: [1, 2, 4],
     surface: 15,
@@ -68,14 +61,14 @@ interface AnsiModeToggleProps {
 
 export function AnsiModeToggle({ mode, onChange }: AnsiModeToggleProps) {
   return (
-    <div className="ansi-toggle" role="group" aria-label="ANSI palette half">
+    <div className="ansi-toggle" role="group" aria-label="Dark / light ANSI palette">
       {OPTIONS.map(({ mode: m, label, hint, slots, swatches, surface }) => (
         <button
           key={m}
           type="button"
           className={"ansi-toggle-btn" + (mode === m ? " active" : "")}
           aria-pressed={mode === m}
-          title={`${label} ANSI — slots ${slots}, ${hint}`}
+          title={`${label} ANSI — slots ${slots}, for ${label.toLowerCase()} themes`}
           onClick={() => onChange(m)}
         >
           <Preview swatches={swatches} surface={surface} />

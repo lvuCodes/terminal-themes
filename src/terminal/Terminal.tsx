@@ -46,9 +46,6 @@ export function Terminal({
       <div className="term-body">
         <Section label="PALETTE">
           <div className="term-palette">
-            <div className="term-palette-toggle">
-              <AnsiModeToggle mode={ansiMode} onChange={onAnsiModeChange} />
-            </div>
             {ANSI_SLOTS.map((s) => (
               <div
                 key={s.slot}
@@ -59,6 +56,9 @@ export function Terminal({
                 {String(s.slot).padStart(2, "0")}
               </div>
             ))}
+            <div className="term-palette-toggle">
+              <AnsiModeToggle mode={ansiMode} onChange={onAnsiModeChange} />
+            </div>
           </div>
         </Section>
 
