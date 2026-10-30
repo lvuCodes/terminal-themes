@@ -29,7 +29,9 @@ describe("favicon", () => {
   it.each(["favicon-32.png", "favicon-16.png", "apple-touch-icon.png"])(
     "links %s from the head and ships it in public/",
     (file) => {
-      expect(indexHtml).toMatch(new RegExp(`<link rel="(icon|apple-touch-icon)"[^>]*href="/${file}"`));
+      expect(indexHtml).toMatch(
+        new RegExp(`<link rel="(icon|apple-touch-icon)"[^>]*href="/${file}"`),
+      );
       expect(existsSync(resolve(__dirname, "../public", file))).toBe(true);
     },
   );
