@@ -48,19 +48,42 @@ describe("Select ref", () => {
   });
 });
 
-const SKIN = '.select:where(:not([multiple], [size]:not([size="0"], [size="1"])))';
+const SKIN = '.select:not([multiple], [size]:not([size="0"], [size="1"]))';
 
-function ruleFor(selector: string) {
-  const start = css.indexOf(`${selector} {`);
+function ruleFor(state = "") {
+  const selector = `:where(${SKIN}${state}) {`;
+  const start = css.indexOf(selector);
   expect(start, selector).toBeGreaterThanOrEqual(0);
   return css.slice(start, css.indexOf("}", start));
 }
 
 describe("select.css", () => {
-  const rule = ruleFor(SKIN);
+  const rule = ruleFor();
 
-  it("skins only single-selects at one-class specificity, leaving listboxes native", () => {
-    expect(rule.startsWith(SKIN)).toBe(true);
+  it.each([
+    ["no size", {}, true],
+    ['size="0"', { size: "0" }, true],
+    ['size="1"', { size: "1" }, true],
+    ['size="4"', { size: "4" }, false],
+    ["multiple", { multiple: "" }, false],
+    ['multiple size="1"', { multiple: "", size: "1" }, false],
+  ])("skin selector with %s matches: %s", (_label, attrs, skinned) => {
+    const el = document.createElement("select");
+    el.className = "select";
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    expect(el.matches(SKIN)).toBe(skinned);
+  });
+
+  it("keeps every selector at zero specificity so caller classes win", () => {
+    const code = css.replace(/\/\*[\s\S]*?\*\//g, "");
+    const selectors = [...code.matchAll(/^[ \t]*([^\s@}][^{\n;]*)\{/gm)].map((m) => m[1].trim());
+    expect(selectors.length).toBeGreaterThan(0);
+    for (const s of selectors) expect(s, s).toMatch(/^:where\(.*\)$/);
+  });
+
+  it("shows hover and keyboard focus", () => {
+    expect(ruleFor(":hover")).toContain("filter: brightness(1.12)");
+    expect(ruleFor(":focus-visible")).toContain("outline: 2px solid var(--accent)");
   });
 
   it("draws a downward chevron from two triangles", () => {
@@ -69,7 +92,7 @@ describe("select.css", () => {
   });
 
   it("marks a disabled select as unavailable", () => {
-    const disabled = ruleFor(`${SKIN}:disabled`);
+    const disabled = ruleFor(":disabled");
     expect(disabled).toContain("opacity: 0.5");
     expect(disabled).toContain("cursor: not-allowed");
   });
