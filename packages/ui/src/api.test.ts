@@ -9,6 +9,7 @@ describe("@lvucodes/ui public API", () => {
       "BackLink",
       "BACK_LINK_DEFAULT_HREF",
       "BACK_LINK_DEFAULT_LABEL",
+      "Select",
       "FooterCredits",
       "DEFAULT_OWNER",
       "DEFAULT_OWNER_HREF",

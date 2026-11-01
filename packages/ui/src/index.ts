@@ -8,6 +8,7 @@
 // lives behind the ./se-smoke subpath so Playwright stays out of app bundles.
 
 export { BackLink, BACK_LINK_DEFAULT_HREF, BACK_LINK_DEFAULT_LABEL } from "./back-link";
+export { Select } from "./select";
 export {
   FooterCredits,
   DEFAULT_OWNER,
