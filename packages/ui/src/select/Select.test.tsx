@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import type { ChangeEvent } from "react";
+import { createRef, type ChangeEvent } from "react";
 import { Select } from "./Select";
 
 const css = readFileSync(resolve(__dirname, "select.css"), "utf8");
@@ -40,11 +40,44 @@ describe("Select", () => {
   });
 });
 
-describe("select.css", () => {
-  const rule = css.slice(css.indexOf(".select:not("), css.indexOf("}"));
+describe("Select ref", () => {
+  it("forwards a ref to the rendered select", () => {
+    const ref = createRef<HTMLSelectElement>();
+    render(<Select aria-label="Sort" ref={ref} />);
+    expect(ref.current).toBe(screen.getByRole("combobox"));
+  });
+});
 
-  it("skins only single-selects, leaving listboxes native", () => {
-    expect(rule).toContain('.select:not([multiple], [size]:not([size="1"]))');
+const SKIN = '.select:where(:not([multiple], [size]:not([size="0"], [size="1"])))';
+
+function ruleFor(selector: string) {
+  const start = css.indexOf(`${selector} {`);
+  expect(start, selector).toBeGreaterThanOrEqual(0);
+  return css.slice(start, css.indexOf("}", start));
+}
+
+describe("select.css", () => {
+  const rule = ruleFor(SKIN);
+
+  it("skins only single-selects at one-class specificity, leaving listboxes native", () => {
+    expect(rule.startsWith(SKIN)).toBe(true);
+  });
+
+  it("draws a downward chevron from two triangles", () => {
+    expect(rule).toContain("linear-gradient(45deg, transparent 50%, currentcolor 50%)");
+    expect(rule).toContain("linear-gradient(135deg, currentcolor 50%, transparent 50%)");
+  });
+
+  it("marks a disabled select as unavailable", () => {
+    const disabled = ruleFor(`${SKIN}:disabled`);
+    expect(disabled).toContain("opacity: 0.5");
+    expect(disabled).toContain("cursor: not-allowed");
+  });
+
+  it("restores the native arrow in forced-colors mode", () => {
+    const forced = css.slice(css.indexOf("@media (forced-colors: active)"));
+    expect(forced).toContain("appearance: auto");
+    expect(forced).toContain("background-image: none");
   });
 
   it("gives the chevron room clear of the right border", () => {

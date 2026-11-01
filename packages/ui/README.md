@@ -6,14 +6,14 @@ Lives in the [terminal-themes](https://github.com/lvuCodes/terminal-themes) repo
 
 ## Contents
 
-| Export                   | Contents                                                                                                                                                                                                      |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@lvucodes/ui`           | `BackLink`, `FooterCredits`, `ThemeSwitcher`, the theme system (`useTheme`, `useAnsiMode`, `applyTheme`, `THEMES`, …); importing it side-effect-loads the palette stylesheet and the shared `.pill` primitive |
-| `@lvucodes/ui/theme.css` | The palette stylesheet alone, for non-React consumers                                                                                                                                                         |
-| `@lvucodes/ui/se-smoke`  | `defineSeSmoke` — the shared iPhone SE (375×667) Playwright smoke suite gating every site's `dev` → `main` merge                                                                                              |
-| `@lvucodes/ui/eslint`    | Shared eslint flat config                                                                                                                                                                                     |
-| `@lvucodes/ui/stylelint` | Shared stylelint config (extend it from `.stylelintrc.json`)                                                                                                                                                  |
-| `@lvucodes/ui/prettier`  | Shared prettier settings (reference it from the `"prettier"` key in `package.json`; CSS is excluded from prettier — stylelint owns CSS)                                                                       |
+| Export                   | Contents                                                                                                                                                                                                                                                                          |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@lvucodes/ui`           | `BackLink`, `FooterCredits`, `Select` (native single-select with a chevron clear of the border), `ThemeSwitcher`, the theme system (`useTheme`, `useAnsiMode`, `applyTheme`, `THEMES`, …); importing it side-effect-loads the palette stylesheet and the shared `.pill` primitive |
+| `@lvucodes/ui/theme.css` | The palette stylesheet alone, for non-React consumers                                                                                                                                                                                                                             |
+| `@lvucodes/ui/se-smoke`  | `defineSeSmoke` — the shared iPhone SE (375×667) Playwright smoke suite gating every site's `dev` → `main` merge                                                                                                                                                                  |
+| `@lvucodes/ui/eslint`    | Shared eslint flat config                                                                                                                                                                                                                                                         |
+| `@lvucodes/ui/stylelint` | Shared stylelint config (extend it from `.stylelintrc.json`)                                                                                                                                                                                                                      |
+| `@lvucodes/ui/prettier`  | Shared prettier settings (reference it from the `"prettier"` key in `package.json`; CSS is excluded from prettier — stylelint owns CSS)                                                                                                                                           |
 
 ## Usage
 

@@ -1,7 +1,9 @@
 /* Single-select skin. The chevron is two gradient triangles in currentColor, so
    it follows the theme's text colour on every palette, which a data-URI SVG
-   cannot do. Together they span 1rem, ending 0.5rem from the right border. */
-.select:not([multiple], [size]:not([size="1"])) {
+   cannot do. Together they span 1rem, ending 0.5rem from the right border.
+   :where() keeps specificity at one class, so a caller's own class can override
+   any declaration here. Listboxes (multiple, or size above 1) stay native. */
+.select:where(:not([multiple], [size]:not([size="0"], [size="1"]))) {
   appearance: none;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -21,7 +23,26 @@
   cursor: pointer;
 }
 
-.select:focus-visible {
+.select:where(:not([multiple], [size]:not([size="0"], [size="1"]))):hover {
+  filter: brightness(1.12);
+}
+
+.select:where(:not([multiple], [size]:not([size="0"], [size="1"]))):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.select:where(:not([multiple], [size]:not([size="0"], [size="1"]))):disabled {
+  opacity: 0.5;
+  filter: none;
+  cursor: not-allowed;
+}
+
+/* High-contrast mode can drop background images, which would leave no arrow,
+   so the native control comes back there. */
+@media (forced-colors: active) {
+  .select {
+    appearance: auto;
+    background-image: none;
+  }
 }
