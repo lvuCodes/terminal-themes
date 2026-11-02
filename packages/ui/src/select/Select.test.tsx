@@ -12,6 +12,11 @@ const css = readFileSync(resolve(__dirname, "select.css"), "utf8");
 afterEach(cleanup);
 
 describe("Select", () => {
+  it("imports its own skin, since a barrel side-effect import gets tree-shaken", () => {
+    const source = readFileSync(resolve(__dirname, "Select.tsx"), "utf8");
+    expect(source).toContain('import "./select.css"');
+  });
+
   it("renders a native select wearing the shared class", () => {
     render(
       <Select aria-label="Sort">
@@ -94,6 +99,7 @@ describe("select.css", () => {
   it("marks a disabled select as unavailable", () => {
     const disabled = ruleFor(":disabled");
     expect(disabled).toContain("opacity: 0.5");
+    expect(disabled).toContain("filter: none");
     expect(disabled).toContain("cursor: not-allowed");
   });
 
@@ -112,5 +118,6 @@ describe("select.css", () => {
 
   it("draws the chevron in the theme's text colour", () => {
     expect(rule.match(/currentcolor/g)).toHaveLength(2);
+    expect(rule).toContain("color: var(--text-h)");
   });
 });
