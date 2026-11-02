@@ -55,6 +55,42 @@ describe("Select ref", () => {
 
 const SKIN = '.select:not([multiple], [size]:not([size="0"], [size="1"]))';
 
+function splitTopLevel(text: string) {
+  const parts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === "(") depth++;
+    else if (text[i] === ")") depth--;
+    else if (text[i] === "," && depth === 0) {
+      parts.push(text.slice(start, i));
+      start = i + 1;
+    }
+  }
+  parts.push(text.slice(start));
+  return parts.map((p) => p.trim()).filter(Boolean);
+}
+
+function selectorsOf(source: string) {
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, "");
+  return code.split("}").flatMap((chunk) => {
+    const open = chunk.lastIndexOf("{");
+    if (open < 0) return [];
+    const prelude = chunk.slice(0, open).split("{").pop()!.trim();
+    return prelude.startsWith("@") ? [] : splitTopLevel(prelude);
+  });
+}
+
+function isSingleWhere(selector: string) {
+  if (!selector.startsWith(":where(")) return false;
+  let depth = 0;
+  for (let i = 6; i < selector.length; i++) {
+    if (selector[i] === "(") depth++;
+    else if (selector[i] === ")" && --depth === 0) return i === selector.length - 1;
+  }
+  return false;
+}
+
 function ruleFor(state = "") {
   const selector = `:where(${SKIN}${state}) {`;
   const start = css.indexOf(selector);
@@ -80,10 +116,20 @@ describe("select.css", () => {
   });
 
   it("keeps every selector at zero specificity so caller classes win", () => {
-    const code = css.replace(/\/\*[\s\S]*?\*\//g, "");
-    const selectors = [...code.matchAll(/^[ \t]*([^\s@}][^{\n;]*)\{/gm)].map((m) => m[1].trim());
+    const selectors = selectorsOf(css);
     expect(selectors.length).toBeGreaterThan(0);
-    for (const s of selectors) expect(s, s).toMatch(/^:where\(.*\)$/);
+    for (const s of selectors) expect(isSingleWhere(s), s).toBe(true);
+  });
+
+  it("catches a selector list that adds specificity", () => {
+    expect(selectorsOf(".select,\n:where(.a) {}")).toEqual([".select", ":where(.a)"]);
+    expect(isSingleWhere(":where(a), :is(b)")).toBe(false);
+    expect(isSingleWhere(":where(a):hover")).toBe(false);
+  });
+
+  it("uses a 16px font on touch screens so iOS does not zoom on focus", () => {
+    const touch = css.slice(css.indexOf("@media (pointer: coarse)"));
+    expect(touch).toMatch(/:where\(\.select\) \{\s*font-size: 1rem;/);
   });
 
   it("shows hover and keyboard focus", () => {

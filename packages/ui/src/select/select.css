@@ -47,3 +47,10 @@
     background-image: none;
   }
 }
+
+/* iOS Safari zooms the page when a control under 16px takes focus. */
+@media (pointer: coarse) {
+  :where(.select) {
+    font-size: 1rem;
+  }
+}
