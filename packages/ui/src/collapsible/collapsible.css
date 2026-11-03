@@ -17,8 +17,14 @@
   color: var(--text-h);
   font-family: var(--sans);
   font-weight: 600;
+  border-radius: inherit;
   cursor: pointer;
   list-style: none;
+}
+
+:where(.collapsible-summary > span) {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 :where(.collapsible-summary)::-webkit-details-marker {
