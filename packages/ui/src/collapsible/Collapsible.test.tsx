@@ -33,7 +33,9 @@ describe("Collapsible", () => {
   it("renders a native details with the summary and body", () => {
     render(<Collapsible summary="Filters">Body text</Collapsible>);
     expect(details().className).toBe("collapsible");
-    expect(screen.getByText("Filters").tagName).toBe("SUMMARY");
+    const label = screen.getByText("Filters");
+    expect(label.tagName).toBe("SPAN");
+    expect(label.parentElement!.tagName).toBe("SUMMARY");
     expect(screen.getByText("Body text").className).toBe("collapsible-body");
     expect(details().open).toBe(false);
   });
@@ -92,6 +94,18 @@ describe("Collapsible", () => {
         B
       </Collapsible>,
     );
+    expect(details().open).toBe(false);
+  });
+
+  it("holds the controlled value when the parent keeps it unchanged", () => {
+    const onToggle = vi.fn();
+    render(
+      <Collapsible summary="S" open={false} onToggle={onToggle}>
+        B
+      </Collapsible>,
+    );
+    userToggle(true);
+    expect(onToggle).toHaveBeenCalledWith(true);
     expect(details().open).toBe(false);
   });
 
@@ -175,6 +189,12 @@ describe("collapsible.css", () => {
     );
   });
 
+  it("brightens the summary on hover like the other controls", () => {
+    expect(ruleBody(css, ":where(.collapsible-summary:hover)")).toContain(
+      "filter: brightness(1.12)",
+    );
+  });
+
   it("shows keyboard focus on the summary", () => {
     expect(ruleBody(css, ":where(.collapsible-summary:focus-visible)")).toContain(
       "outline: 2px solid var(--accent)",
@@ -183,6 +203,6 @@ describe("collapsible.css", () => {
 
   it("drops the chevron animation for reduced motion", () => {
     const reduced = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
-    expect(reduced).toContain("transition: none");
+    expect(ruleBody(reduced, ":where(.collapsible-summary)::before")).toContain("transition: none");
   });
 });

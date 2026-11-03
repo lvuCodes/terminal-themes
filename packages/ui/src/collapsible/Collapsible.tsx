@@ -7,10 +7,11 @@ export interface CollapsibleProps {
   summary: ReactNode;
   children: ReactNode;
   // Controlled open state. Omit it to let the section manage its own state.
+  // Pick one mode per mount; switching between them is not supported.
   open?: boolean;
   defaultOpen?: boolean;
-  // localStorage key that remembers the open state across visits. Ignored when
-  // `open` is controlled.
+  // localStorage key that remembers the open state across visits. Read once per
+  // mount, and ignored when `open` is controlled.
   storageKey?: string;
   onToggle?: (open: boolean) => void;
   className?: string;
@@ -55,6 +56,10 @@ export function Collapsible({
     if (open === undefined) {
       setOwnOpen(next);
       writeStored(storageKey, next);
+    } else {
+      // The browser already flipped the element. Hold the prop's value so a
+      // parent that keeps its state unchanged keeps the DOM unchanged too.
+      event.currentTarget.open = open;
     }
     onToggle?.(next);
   }
@@ -65,7 +70,9 @@ export function Collapsible({
       open={isOpen}
       onToggle={handleToggle}
     >
-      <summary className="collapsible-summary">{summary}</summary>
+      <summary className="collapsible-summary">
+        <span>{summary}</span>
+      </summary>
       <div className="collapsible-body">{children}</div>
     </details>
   );
