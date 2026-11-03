@@ -46,9 +46,15 @@ export function isSingleWhere(rawSelector: string) {
   return false;
 }
 
-// The declaration block of the rule whose selector is exactly `selector`.
+// The declaration block of the rule whose whole prelude is exactly `selector`,
+// ignoring comments, so a longer selector ending in the same text never matches.
 export function ruleBody(source: string, selector: string) {
-  const start = source.indexOf(`${selector} {`);
-  if (start < 0) throw new Error(`no rule for ${selector}`);
-  return source.slice(start, source.indexOf("}", start));
+  const code = source.replace(/\/\*[\s\S]*?\*\//g, "");
+  for (const chunk of code.split("}")) {
+    const open = chunk.lastIndexOf("{");
+    if (open < 0) continue;
+    const prelude = chunk.slice(0, open).split("{").pop()!.trim();
+    if (prelude === selector) return chunk.slice(open + 1);
+  }
+  throw new Error(`no rule for ${selector}`);
 }

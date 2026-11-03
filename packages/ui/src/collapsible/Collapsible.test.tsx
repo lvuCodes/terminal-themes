@@ -36,6 +36,7 @@ describe("Collapsible", () => {
     const label = screen.getByText("Filters");
     expect(label.tagName).toBe("SPAN");
     expect(label.parentElement!.tagName).toBe("SUMMARY");
+    expect(label.parentElement!.className).toBe("collapsible-summary");
     expect(screen.getByText("Body text").className).toBe("collapsible-body");
     expect(details().open).toBe(false);
   });
@@ -60,6 +61,9 @@ describe("Collapsible", () => {
     userToggle(false);
     expect(onToggle).toHaveBeenCalledWith(false);
     expect(details().open).toBe(false);
+    userToggle(true);
+    expect(onToggle).toHaveBeenCalledTimes(2);
+    expect(onToggle).toHaveBeenLastCalledWith(true);
   });
 
   it("ignores the toggle event React's own open update fires", () => {
@@ -126,6 +130,9 @@ describe("Collapsible", () => {
     );
     userToggle(true);
     expect(localStorage.getItem("filters-open")).toBe("1");
+    userToggle(false);
+    expect(localStorage.getItem("filters-open")).toBe("0");
+    userToggle(true);
     first.unmount();
     render(
       <Collapsible summary="S" storageKey="filters-open">
@@ -189,9 +196,9 @@ describe("collapsible.css", () => {
     );
   });
 
-  it("brightens the summary on hover like the other controls", () => {
+  it("tints the summary on hover so it shows on every palette", () => {
     expect(ruleBody(css, ":where(.collapsible-summary:hover)")).toContain(
-      "filter: brightness(1.12)",
+      "background: color-mix(in srgb, var(--text-h) 8%, transparent)",
     );
   });
 

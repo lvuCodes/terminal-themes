@@ -41,7 +41,7 @@
 }
 
 :where(.collapsible-summary:hover) {
-  filter: brightness(1.12);
+  background: color-mix(in srgb, var(--text-h) 8%, transparent);
 }
 
 :where(.collapsible-summary:focus-visible) {

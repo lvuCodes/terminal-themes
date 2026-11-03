@@ -23,5 +23,10 @@ describe("css-rules test helpers", () => {
   it("returns a rule's declarations and throws for a missing rule", () => {
     expect(ruleBody(":where(.a) { gap: 0; }", ":where(.a)")).toContain("gap: 0");
     expect(() => ruleBody("", ":where(.a)")).toThrow("no rule for :where(.a)");
+    expect(() => ruleBody(".x :where(.a) { gap: 0; }", ":where(.a)")).toThrow();
+    expect(() => ruleBody("/* :where(.a) { gap: 0; } */", ":where(.a)")).toThrow();
+    expect(ruleBody("@media (x) {\n  :where(.a) { gap: 1px; }\n}", ":where(.a)")).toContain(
+      "gap: 1px",
+    );
   });
 });
