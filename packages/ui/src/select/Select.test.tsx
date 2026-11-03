@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createRef, type ChangeEvent } from "react";
+import { isSingleWhere, ruleBody, selectorsOf } from "../test-support/css-rules";
 import { Select } from "./Select";
 
 const css = readFileSync(resolve(__dirname, "select.css"), "utf8");
@@ -55,47 +56,8 @@ describe("Select ref", () => {
 
 const SKIN = '.select:not([multiple], [size]:not([size="0"], [size="1"]))';
 
-function splitTopLevel(text: string) {
-  const parts: string[] = [];
-  let depth = 0;
-  let start = 0;
-  for (let i = 0; i < text.length; i++) {
-    if (text[i] === "(") depth++;
-    else if (text[i] === ")") depth--;
-    else if (text[i] === "," && depth === 0) {
-      parts.push(text.slice(start, i));
-      start = i + 1;
-    }
-  }
-  parts.push(text.slice(start));
-  return parts.map((p) => p.trim()).filter(Boolean);
-}
-
-function selectorsOf(source: string) {
-  const code = source.replace(/\/\*[\s\S]*?\*\//g, "");
-  return code.split("}").flatMap((chunk) => {
-    const open = chunk.lastIndexOf("{");
-    if (open < 0) return [];
-    const prelude = chunk.slice(0, open).split("{").pop()!.trim();
-    return prelude.startsWith("@") ? [] : splitTopLevel(prelude);
-  });
-}
-
-function isSingleWhere(selector: string) {
-  if (!selector.startsWith(":where(")) return false;
-  let depth = 0;
-  for (let i = 6; i < selector.length; i++) {
-    if (selector[i] === "(") depth++;
-    else if (selector[i] === ")" && --depth === 0) return i === selector.length - 1;
-  }
-  return false;
-}
-
 function ruleFor(state = "") {
-  const selector = `:where(${SKIN}${state}) {`;
-  const start = css.indexOf(selector);
-  expect(start, selector).toBeGreaterThanOrEqual(0);
-  return css.slice(start, css.indexOf("}", start));
+  return ruleBody(css, `:where(${SKIN}${state})`);
 }
 
 describe("select.css", () => {

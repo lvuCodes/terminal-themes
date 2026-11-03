@@ -10,6 +10,7 @@ describe("@lvucodes/ui public API", () => {
       "BACK_LINK_DEFAULT_HREF",
       "BACK_LINK_DEFAULT_LABEL",
       "Select",
+      "Collapsible",
       "FooterCredits",
       "DEFAULT_OWNER",
       "DEFAULT_OWNER_HREF",

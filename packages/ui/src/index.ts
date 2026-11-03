@@ -9,6 +9,7 @@
 
 export { BackLink, BACK_LINK_DEFAULT_HREF, BACK_LINK_DEFAULT_LABEL } from "./back-link";
 export { Select } from "./select";
+export { Collapsible, type CollapsibleProps } from "./collapsible";
 export {
   FooterCredits,
   DEFAULT_OWNER,
