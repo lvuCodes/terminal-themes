@@ -50,8 +50,8 @@ export function FilterBar({
   const showClear = onClear !== undefined && activeCount > 0;
 
   // React runs a ref's cleanup before it removes the node, so this sees
-  // whether the clear button still held focus as it unmounts. Stable, so the
-  // cleanup runs only on a real unmount.
+  // whether the clear button still held focus as it unmounts. Kept stable so
+  // re-renders do not run the cleanup and set the flag spuriously.
   const trackClearButton = useCallback(
     (node: HTMLButtonElement | null) => () => {
       if (document.activeElement === node) refocusGroup.current = true;
