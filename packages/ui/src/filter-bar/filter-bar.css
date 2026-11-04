@@ -12,10 +12,24 @@
   color: var(--text);
 }
 
+:where(.filter-bar:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+:where(.filter-bar-vertical) {
+  flex-direction: column;
+  align-items: stretch;
+}
+
 :where(.filter-bar-status) {
   margin-left: auto;
   font-size: 0.875rem;
   white-space: nowrap;
+}
+
+:where(.filter-bar-vertical > .filter-bar-status) {
+  margin-left: 0;
 }
 
 :where(.filter-chip) {

@@ -1,6 +1,12 @@
 // Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
 
-import { useImperativeHandle, useRef, type ComponentProps, type ReactNode } from "react";
+import {
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  type ComponentProps,
+  type ReactNode,
+} from "react";
 import "./filter-bar.css";
 
 export interface FilterBarProps extends Omit<ComponentProps<"div">, "role"> {
@@ -17,10 +23,10 @@ export interface FilterBarProps extends Omit<ComponentProps<"div">, "role"> {
   // Announce status changes politely. Turn off when the status changes on every
   // keystroke of a search field in the same bar.
   announceStatus?: boolean;
+  // "vertical" stacks the controls full width, for a side panel of groups.
+  orientation?: "horizontal" | "vertical";
 }
 
-// One wrapping row. For a vertical panel, give it a class that sets
-// flex-direction: column; the skin has zero specificity, so that class wins.
 export function FilterBar({
   label,
   activeCount = 0,
@@ -28,20 +34,36 @@ export function FilterBar({
   clearLabel = "Clear filters",
   status,
   announceStatus = true,
+  orientation = "horizontal",
   className,
   children,
   ref,
   ...props
 }: FilterBarProps) {
   const groupRef = useRef<HTMLDivElement>(null);
+  const clearPressed = useRef(false);
   useImperativeHandle(ref, () => groupRef.current!, []);
+  const showClear = onClear !== undefined && activeCount > 0;
+
+  // When clearing unmounts the focused clear button, focus falls to the page
+  // body; return it to the group instead. A clear that leaves filters active
+  // keeps the button, and focus stays on it.
+  useLayoutEffect(() => {
+    if (!clearPressed.current) return;
+    clearPressed.current = false;
+    if (!showClear && document.activeElement === document.body) {
+      groupRef.current!.focus({ preventScroll: true });
+    }
+  });
 
   function handleClear() {
-    // The clear button unmounts once nothing is active, so move focus to the
-    // group first rather than letting it fall back to the page body.
-    groupRef.current!.focus();
+    clearPressed.current = true;
     onClear!();
   }
+
+  const classes = ["filter-bar"];
+  if (orientation === "vertical") classes.push("filter-bar-vertical");
+  if (className) classes.push(className);
 
   return (
     <div
@@ -50,10 +72,10 @@ export function FilterBar({
       role="group"
       aria-label={label}
       tabIndex={-1}
-      className={className ? `filter-bar ${className}` : "filter-bar"}
+      className={classes.join(" ")}
     >
       {children}
-      {onClear && activeCount > 0 && (
+      {showClear && (
         <button type="button" className="filter-chip filter-bar-clear" onClick={handleClear}>
           {clearLabel} ({activeCount})
         </button>

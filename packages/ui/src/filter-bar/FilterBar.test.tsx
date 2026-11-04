@@ -64,6 +64,50 @@ describe("FilterBar", () => {
     expect(document.activeElement).toBe(screen.getByRole("group"));
   });
 
+  it("leaves focus on the clear button when filters stay active", async () => {
+    function Harness() {
+      const [count, setCount] = useState(3);
+      return <FilterBar label="F" activeCount={count} onClear={() => setCount(1)} />;
+    }
+    render(<Harness />);
+    screen.getByRole("button").focus();
+    await userEvent.keyboard("{Enter}");
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Clear filters (1)" }));
+  });
+
+  it("does not take focus when filters empty without a clear press", () => {
+    const { rerender } = render(<FilterBar label="F" activeCount={1} onClear={() => {}} />);
+    rerender(<FilterBar label="F" activeCount={0} onClear={() => {}} />);
+    expect(document.activeElement).toBe(document.body);
+  });
+
+  it("does not steal focus that moved elsewhere during clear", async () => {
+    function Harness() {
+      const [count, setCount] = useState(2);
+      return (
+        <>
+          <input aria-label="Search" />
+          <FilterBar
+            label="F"
+            activeCount={count}
+            onClear={() => {
+              setCount(0);
+              screen.getByRole("textbox").focus();
+            }}
+          />
+        </>
+      );
+    }
+    render(<Harness />);
+    await userEvent.click(screen.getByRole("button"));
+    expect(document.activeElement).toBe(screen.getByRole("textbox"));
+  });
+
+  it("adds the vertical class beside a caller's class", () => {
+    render(<FilterBar label="F" orientation="vertical" className="side" />);
+    expect(screen.getByRole("group").className).toBe("filter-bar filter-bar-vertical side");
+  });
+
   it("keeps its fixed role over a conflicting caller attribute", () => {
     const loose = { role: "toolbar" } as object;
     render(<FilterBar label="F" {...loose} />);
@@ -196,6 +240,21 @@ describe("filter-bar.css", () => {
     expect(check).toContain("border-right: 2px solid currentcolor");
     expect(check).toContain("border-bottom: 2px solid currentcolor");
     expect(check).toContain("transform: rotate(45deg)");
+  });
+
+  it("stacks controls full width when vertical", () => {
+    const vertical = ruleBody(css, ":where(.filter-bar-vertical)");
+    expect(vertical).toContain("flex-direction: column");
+    expect(vertical).toContain("align-items: stretch");
+    expect(ruleBody(css, ":where(.filter-bar-vertical > .filter-bar-status)")).toContain(
+      "margin-left: 0",
+    );
+  });
+
+  it("rings the group with the accent when it takes keyboard focus", () => {
+    expect(ruleBody(css, ":where(.filter-bar:focus-visible)")).toContain(
+      "outline: 2px solid var(--accent)",
+    );
   });
 
   it("leaves the clear button without a check mark slot", () => {
