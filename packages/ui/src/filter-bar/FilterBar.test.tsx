@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -73,6 +73,38 @@ describe("FilterBar", () => {
     screen.getByRole("button").focus();
     await userEvent.keyboard("{Enter}");
     expect(document.activeElement).toBe(screen.getByRole("button", { name: "Clear filters (1)" }));
+  });
+
+  it("does not take focus later after a clear that changed nothing", async () => {
+    const { rerender } = render(<FilterBar label="F" activeCount={2} onClear={() => {}} />);
+    await userEvent.click(screen.getByRole("button"));
+    screen.getByRole("button").blur();
+    rerender(<FilterBar label="F" activeCount={0} onClear={() => {}} />);
+    expect(document.activeElement).toBe(document.body);
+  });
+
+  it("leaves focus alone on a partial clear from an unfocused button", () => {
+    function Harness() {
+      const [count, setCount] = useState(3);
+      return <FilterBar label="F" activeCount={count} onClear={() => setCount(1)} />;
+    }
+    render(<Harness />);
+    fireEvent.click(screen.getByRole("button"));
+    expect(screen.getByRole("button").textContent).toBe("Clear filters (1)");
+    expect(document.activeElement).toBe(document.body);
+  });
+
+  it("returns focus to the group only once", () => {
+    function Harness({ count }: { count: number }) {
+      return <FilterBar label="F" activeCount={count} onClear={() => {}} />;
+    }
+    const { rerender } = render(<Harness count={1} />);
+    screen.getByRole("button").focus();
+    rerender(<Harness count={0} />);
+    expect(document.activeElement).toBe(screen.getByRole("group"));
+    (document.activeElement as HTMLElement).blur();
+    rerender(<Harness count={0} />);
+    expect(document.activeElement).toBe(document.body);
   });
 
   it("does not take focus when filters empty without a clear press", () => {

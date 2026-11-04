@@ -1,6 +1,7 @@
 // Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
 
 import {
+  useCallback,
   useImperativeHandle,
   useLayoutEffect,
   useRef,
@@ -41,25 +42,26 @@ export function FilterBar({
   ...props
 }: FilterBarProps) {
   const groupRef = useRef<HTMLDivElement>(null);
-  const clearPressed = useRef(false);
+  const refocusGroup = useRef(false);
   useImperativeHandle(ref, () => groupRef.current!, []);
   const showClear = onClear !== undefined && activeCount > 0;
 
-  // When clearing unmounts the focused clear button, focus falls to the page
-  // body; return it to the group instead. A clear that leaves filters active
-  // keeps the button, and focus stays on it.
-  useLayoutEffect(() => {
-    if (!clearPressed.current) return;
-    clearPressed.current = false;
-    if (!showClear && document.activeElement === document.body) {
-      groupRef.current!.focus({ preventScroll: true });
-    }
-  });
+  // React runs a ref's cleanup before it removes the node, so this sees
+  // whether the clear button still held focus as it unmounts. Stable, so the
+  // cleanup runs only on a real unmount.
+  const trackClearButton = useCallback(
+    (node: HTMLButtonElement | null) => () => {
+      if (document.activeElement === node) refocusGroup.current = true;
+    },
+    [],
+  );
 
-  function handleClear() {
-    clearPressed.current = true;
-    onClear!();
-  }
+  // Focus would otherwise fall to the page body; return it to the group.
+  useLayoutEffect(() => {
+    if (!refocusGroup.current) return;
+    refocusGroup.current = false;
+    groupRef.current!.focus({ preventScroll: true });
+  });
 
   const classes = ["filter-bar"];
   if (orientation === "vertical") classes.push("filter-bar-vertical");
@@ -76,7 +78,12 @@ export function FilterBar({
     >
       {children}
       {showClear && (
-        <button type="button" className="filter-chip filter-bar-clear" onClick={handleClear}>
+        <button
+          ref={trackClearButton}
+          type="button"
+          className="filter-chip filter-bar-clear"
+          onClick={onClear}
+        >
           {clearLabel} ({activeCount})
         </button>
       )}
