@@ -1,7 +1,8 @@
 /* Filter bar and filter chips. Every selector sits inside :where(), so the
    skin has zero specificity and a caller's class overrides it regardless of
    stylesheet order. The pressed chip carries a drawn check mark as well as
-   the accent fill, so its state survives greyscale and forced-colors mode. */
+   the accent fill, so its state survives greyscale and forced-colors mode.
+   Every chip reserves the check mark's room, so pressing never reflows a row. */
 :where(.filter-bar) {
   display: flex;
   flex-wrap: wrap;
@@ -37,8 +38,9 @@
   color: var(--on-accent);
 }
 
-:where(.filter-chip[aria-pressed="true"])::before {
+:where(.filter-chip)::before {
   content: "";
+  visibility: hidden;
   flex: none;
   width: 0.25rem;
   height: 0.5rem;
@@ -46,6 +48,14 @@
   border-right: 2px solid currentcolor;
   border-bottom: 2px solid currentcolor;
   transform: rotate(45deg);
+}
+
+:where(.filter-chip[aria-pressed="true"])::before {
+  visibility: visible;
+}
+
+:where(.filter-bar-clear)::before {
+  display: none;
 }
 
 :where(.filter-chip:hover) {

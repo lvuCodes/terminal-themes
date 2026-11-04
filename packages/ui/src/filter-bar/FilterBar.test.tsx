@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createRef } from "react";
+import { createRef, useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -52,6 +52,24 @@ describe("FilterBar", () => {
     expect(onClear).toHaveBeenCalledTimes(1);
   });
 
+  it("keeps keyboard focus in the bar when the clear button disappears", async () => {
+    function Harness() {
+      const [count, setCount] = useState(2);
+      return <FilterBar label="F" activeCount={count} onClear={() => setCount(0)} />;
+    }
+    render(<Harness />);
+    screen.getByRole("button").focus();
+    await userEvent.keyboard("{Enter}");
+    expect(screen.queryByRole("button")).toBeNull();
+    expect(document.activeElement).toBe(screen.getByRole("group"));
+  });
+
+  it("keeps its fixed role over a conflicting caller attribute", () => {
+    const loose = { role: "toolbar" } as object;
+    render(<FilterBar label="F" {...loose} />);
+    expect(screen.getByRole("group", { name: "F" })).toBeTruthy();
+  });
+
   it("uses a custom clear label", () => {
     render(<FilterBar label="F" activeCount={1} onClear={() => {}} clearLabel="Reset" />);
     expect(screen.getByRole("button", { name: "Reset (1)" })).toBeTruthy();
@@ -71,6 +89,17 @@ describe("FilterBar", () => {
     const status = screen.getByRole("status");
     expect(status.textContent).toBe("12 / 80 families");
     expect(status.className).toBe("filter-bar-status");
+  });
+
+  it("renders a null status as an empty live region, ready to announce", () => {
+    render(<FilterBar label="F" status={null} />);
+    expect(screen.getByRole("status").textContent).toBe("");
+  });
+
+  it("shows the status without announcing it when announceStatus is off", () => {
+    render(<FilterBar label="F" status="3 results" announceStatus={false} />);
+    expect(screen.queryByRole("status")).toBeNull();
+    expect(screen.getByText("3 results").className).toBe("filter-bar-status");
   });
 });
 
@@ -109,6 +138,18 @@ describe("FilterChip", () => {
     expect(onPressedChange).not.toHaveBeenCalled();
   });
 
+  it("forwards its ref and keeps its fixed type and pressed state", () => {
+    const ref = createRef<HTMLButtonElement>();
+    const loose = { type: "submit", "aria-pressed": "mixed" } as object;
+    render(
+      <FilterChip ref={ref} pressed onPressedChange={() => {}} {...loose}>
+        X
+      </FilterChip>,
+    );
+    expect(ref.current!.getAttribute("type")).toBe("button");
+    expect(ref.current!.getAttribute("aria-pressed")).toBe("true");
+  });
+
   it("keeps a caller's class and does not toggle when disabled", async () => {
     const onPressedChange = vi.fn();
     render(
@@ -145,11 +186,20 @@ describe("filter-bar.css", () => {
   });
 
   it("draws a check mark on a pressed chip so state is not colour alone", () => {
-    const check = ruleBody(css, ':where(.filter-chip[aria-pressed="true"])::before');
+    expect(ruleBody(css, ':where(.filter-chip[aria-pressed="true"])::before')).toContain(
+      "visibility: visible",
+    );
+    const check = ruleBody(css, ":where(.filter-chip)::before");
+    expect(check).toContain("visibility: hidden");
+    expect(check).not.toContain("display: none");
     expect(check).toContain('content: ""');
     expect(check).toContain("border-right: 2px solid currentcolor");
     expect(check).toContain("border-bottom: 2px solid currentcolor");
     expect(check).toContain("transform: rotate(45deg)");
+  });
+
+  it("leaves the clear button without a check mark slot", () => {
+    expect(ruleBody(css, ":where(.filter-bar-clear)::before")).toContain("display: none");
   });
 
   it("shows focus, hover, and disabled states", () => {
