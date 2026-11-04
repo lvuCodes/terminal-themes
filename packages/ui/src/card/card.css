@@ -10,7 +10,7 @@
   background: var(--panel);
   color: var(--text);
   padding: 1rem;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 :where(.card-heading) {

@@ -57,11 +57,13 @@ describe("Card", () => {
     expect(section.textContent).toBe("Body only");
   });
 
-  it("treats null and false headings as absent", () => {
+  it("treats null, boolean, and empty headings as absent", () => {
     const { container } = render(
       <>
         <Card heading={null}>x</Card>
         <Card heading={false}>y</Card>
+        <Card heading={true}>z</Card>
+        <Card heading="">w</Card>
       </>,
     );
     expect(screen.queryByRole("heading")).toBeNull();
@@ -99,6 +101,17 @@ describe("Card", () => {
     expect(container.querySelector("section")!.getAttribute("aria-labelledby")).toBe("ext");
     expect(screen.getByRole("region", { name: "External" })).toBeTruthy();
   });
+
+  it("lets a caller's aria-label win over the heading", () => {
+    const { container } = render(
+      <Card heading="Inner" aria-label="Named">
+        x
+      </Card>,
+    );
+    expect(container.querySelector("section")!.hasAttribute("aria-labelledby")).toBe(false);
+    expect(screen.getByRole("region", { name: "Named" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Inner" })).toBeTruthy();
+  });
 });
 
 describe("card.css", () => {
@@ -116,7 +129,9 @@ describe("card.css", () => {
     expect(card).toContain("padding: 1rem");
     expect(card).toContain("box-sizing: border-box");
     expect(card).toContain("max-width: 100%");
-    expect(card).toContain("overflow-wrap: anywhere");
+    expect(card).toContain("overflow-wrap: break-word");
+    expect(card).toContain("min-width: 0");
+    expect(card).toContain("color: var(--text)");
     expect(card).not.toContain("margin");
   });
 
