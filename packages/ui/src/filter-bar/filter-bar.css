@@ -30,6 +30,7 @@
 
 :where(.filter-bar-vertical > .filter-bar-status) {
   margin-left: 0;
+  white-space: normal;
 }
 
 :where(.filter-chip) {

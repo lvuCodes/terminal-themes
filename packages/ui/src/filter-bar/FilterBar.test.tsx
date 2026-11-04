@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createRef, useState } from "react";
+import { Activity, createRef, useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -73,6 +73,34 @@ describe("FilterBar", () => {
     screen.getByRole("button").focus();
     await userEvent.keyboard("{Enter}");
     expect(document.activeElement).toBe(screen.getByRole("button", { name: "Clear filters (1)" }));
+  });
+
+  it("returns focus without scrolling the page", () => {
+    const focus = vi.spyOn(HTMLElement.prototype, "focus");
+    const { rerender } = render(<FilterBar label="F" activeCount={1} onClear={() => {}} />);
+    screen.getByRole("button").focus();
+    rerender(<FilterBar label="F" activeCount={0} onClear={() => {}} />);
+    expect(focus).toHaveBeenLastCalledWith({ preventScroll: true });
+    focus.mockRestore();
+  });
+
+  it("does not take focus when shown again after focus moved elsewhere", () => {
+    function Harness({ mode }: { mode: "visible" | "hidden" }) {
+      return (
+        <>
+          <input aria-label="Search" />
+          <Activity mode={mode}>
+            <FilterBar label="F" activeCount={1} onClear={() => {}} />
+          </Activity>
+        </>
+      );
+    }
+    const { rerender } = render(<Harness mode="visible" />);
+    screen.getByRole("button").focus();
+    rerender(<Harness mode="hidden" />);
+    screen.getByRole("textbox").focus();
+    rerender(<Harness mode="visible" />);
+    expect(document.activeElement).toBe(screen.getByRole("textbox"));
   });
 
   it("does not take focus later after a clear that changed nothing", async () => {
@@ -278,9 +306,9 @@ describe("filter-bar.css", () => {
     const vertical = ruleBody(css, ":where(.filter-bar-vertical)");
     expect(vertical).toContain("flex-direction: column");
     expect(vertical).toContain("align-items: stretch");
-    expect(ruleBody(css, ":where(.filter-bar-vertical > .filter-bar-status)")).toContain(
-      "margin-left: 0",
-    );
+    const status = ruleBody(css, ":where(.filter-bar-vertical > .filter-bar-status)");
+    expect(status).toContain("margin-left: 0");
+    expect(status).toContain("white-space: normal");
   });
 
   it("rings the group with the accent when it takes keyboard focus", () => {

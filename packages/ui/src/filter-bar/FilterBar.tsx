@@ -10,7 +10,10 @@ import {
 } from "react";
 import "./filter-bar.css";
 
-export interface FilterBarProps extends Omit<ComponentProps<"div">, "role"> {
+export interface FilterBarProps extends Omit<
+  ComponentProps<"div">,
+  "role" | "aria-label" | "aria-labelledby"
+> {
   // Accessible name of the group, e.g. "Font filters".
   label: string;
   // Number of filters currently applied. With onClear, a clear button shows
@@ -56,11 +59,15 @@ export function FilterBar({
     [],
   );
 
-  // Focus would otherwise fall to the page body; return it to the group.
+  // Focus would otherwise fall to the page body; return it to the group. The
+  // body check skips a stale flag, e.g. from a hidden <Activity> shown again
+  // after the user has moved focus elsewhere.
   useLayoutEffect(() => {
     if (!refocusGroup.current) return;
     refocusGroup.current = false;
-    groupRef.current!.focus({ preventScroll: true });
+    if (document.activeElement === document.body) {
+      groupRef.current!.focus({ preventScroll: true });
+    }
   });
 
   const classes = ["filter-bar"];
