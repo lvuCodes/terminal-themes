@@ -1,7 +1,7 @@
 // Terminal Themes. Copyright (C) 2026 lvuCodes. Licensed under GPL-3.0-or-later; see LICENSE.
 
 import "./App.css";
-import { BackLink, FooterCredits, ThemeSwitcher, useAnsiMode, useTheme } from "@lvucodes/ui";
+import { BackLink, Card, FooterCredits, ThemeSwitcher, useAnsiMode, useTheme } from "@lvucodes/ui";
 import { Terminal } from "./terminal";
 
 const SURFACE_TOKENS = [
@@ -41,8 +41,7 @@ function App() {
 
       <Terminal ansiMode={ansiMode} onAnsiModeChange={setAnsiMode} />
 
-      <section className="panel">
-        <h2>Surfaces &amp; text</h2>
+      <Card heading="Surfaces & text" className="panel">
         <div className="swatches">
           {SURFACE_TOKENS.map((t) => (
             <div key={t.token} className="swatch">
@@ -52,10 +51,9 @@ function App() {
             </div>
           ))}
         </div>
-      </section>
+      </Card>
 
-      <section className="panel">
-        <h2>Categorical ramp</h2>
+      <Card heading="Categorical ramp" className="panel">
         <div className="ramp">
           {RAMP_TOKENS.map((t) => (
             <div
@@ -67,7 +65,7 @@ function App() {
             </div>
           ))}
         </div>
-      </section>
+      </Card>
 
       <FooterCredits
         licenseHref="https://github.com/lvuCodes/terminal-themes/blob/main/LICENSE"

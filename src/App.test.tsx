@@ -36,6 +36,14 @@ describe("App", () => {
     expect(document.documentElement.dataset.theme).toBe("novel");
   });
 
+  it("groups the token sections in named Card regions", () => {
+    render(<App />);
+    for (const name of ["Surfaces & text", "Categorical ramp"]) {
+      const region = screen.getByRole("region", { name });
+      expect(region.className).toBe("card panel");
+    }
+  });
+
   it("renders the surface swatches and the full categorical ramp", () => {
     const { container } = render(<App />);
     expect(screen.getByText("--accent")).toBeTruthy();

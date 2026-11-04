@@ -1,0 +1,25 @@
+/* Card container. Every selector sits inside :where(), so the skin has zero
+   specificity and a caller's class overrides it regardless of stylesheet
+   order. Outer spacing is left to the caller, since it depends on layout. */
+:where(.card) {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 1rem;
+  overflow-wrap: anywhere;
+}
+
+:where(.card-heading) {
+  margin-top: 0;
+  color: var(--text-h);
+}
+
+@media (forced-colors: active) {
+  :where(.card) {
+    border-color: CanvasText;
+  }
+}

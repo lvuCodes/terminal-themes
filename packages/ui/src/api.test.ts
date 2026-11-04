@@ -11,6 +11,7 @@ describe("@lvucodes/ui public API", () => {
       "BACK_LINK_DEFAULT_LABEL",
       "Select",
       "Collapsible",
+      "Card",
       "FooterCredits",
       "DEFAULT_OWNER",
       "DEFAULT_OWNER_HREF",
