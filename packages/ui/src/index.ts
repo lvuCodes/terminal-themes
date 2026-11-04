@@ -11,6 +11,7 @@ export { BackLink, BACK_LINK_DEFAULT_HREF, BACK_LINK_DEFAULT_LABEL } from "./bac
 export { Select } from "./select";
 export { Collapsible, type CollapsibleProps } from "./collapsible";
 export { Card, type CardProps } from "./card";
+export { FilterBar, FilterChip, type FilterBarProps, type FilterChipProps } from "./filter-bar";
 export {
   FooterCredits,
   DEFAULT_OWNER,

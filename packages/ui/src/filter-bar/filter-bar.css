@@ -1,0 +1,76 @@
+/* Filter bar and filter chips. Every selector sits inside :where(), so the
+   skin has zero specificity and a caller's class overrides it regardless of
+   stylesheet order. The pressed chip carries a drawn check mark as well as
+   the accent fill, so its state survives greyscale and forced-colors mode. */
+:where(.filter-bar) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  color: var(--text);
+}
+
+:where(.filter-bar-status) {
+  margin-left: auto;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+:where(.filter-chip) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  padding: 0.25rem 0.75rem;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+:where(.filter-chip[aria-pressed="true"]) {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+:where(.filter-chip[aria-pressed="true"])::before {
+  content: "";
+  flex: none;
+  width: 0.25rem;
+  height: 0.5rem;
+  margin-bottom: 0.125rem;
+  border-right: 2px solid currentcolor;
+  border-bottom: 2px solid currentcolor;
+  transform: rotate(45deg);
+}
+
+:where(.filter-chip:hover) {
+  filter: brightness(1.12);
+}
+
+:where(.filter-chip:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+:where(.filter-chip:disabled) {
+  opacity: 0.5;
+  filter: none;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  :where(.filter-chip[aria-pressed="true"]) {
+    border-color: Highlight;
+  }
+}
+
+@media (pointer: coarse) {
+  :where(.filter-chip) {
+    min-height: 2.75rem;
+  }
+}

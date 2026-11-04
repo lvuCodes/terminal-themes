@@ -12,6 +12,8 @@ describe("@lvucodes/ui public API", () => {
       "Select",
       "Collapsible",
       "Card",
+      "FilterBar",
+      "FilterChip",
       "FooterCredits",
       "DEFAULT_OWNER",
       "DEFAULT_OWNER_HREF",
