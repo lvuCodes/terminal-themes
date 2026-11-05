@@ -1,0 +1,126 @@
+/* Toggle switch. Every selector sits inside :where(), so the skin has zero
+   specificity and a caller's class overrides it regardless of stylesheet
+   order. The native checkbox stays in the page, visually hidden, and the
+   track after it draws the state. The knob's position carries the state as
+   well as the fill: left is off, right is on, centre is indeterminate. */
+:where(.switch) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+:where(.switch-input) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+}
+
+:where(.switch-label-hidden) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+:where(.switch-track) {
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  width: 2.25rem;
+  height: 1.25rem;
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  background: var(--border);
+  transition: background-color 0.15s ease;
+}
+
+:where(.switch-track)::before {
+  content: "";
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background: var(--text-h);
+  transition: transform 0.15s ease;
+}
+
+:where(.switch-input:checked + .switch-track) {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+:where(.switch-input:checked + .switch-track)::before {
+  background: var(--on-accent);
+  transform: translateX(1rem);
+}
+
+:where(.switch-input:indeterminate + .switch-track) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 50%, var(--border));
+}
+
+:where(.switch-input:indeterminate + .switch-track)::before {
+  background: var(--text-h);
+  transform: translateX(0.5rem);
+}
+
+:where(.switch-input:focus-visible + .switch-track) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+:where(.switch:has(.switch-input:disabled)) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  :where(.switch-track) {
+    forced-color-adjust: none;
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  :where(.switch-track)::before {
+    background: CanvasText;
+  }
+
+  :where(.switch-input:checked + .switch-track),
+  :where(.switch-input:indeterminate + .switch-track) {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  :where(.switch-input:checked + .switch-track)::before,
+  :where(.switch-input:indeterminate + .switch-track)::before {
+    background: HighlightText;
+  }
+
+  :where(.switch-input:focus-visible + .switch-track) {
+    outline-color: Highlight;
+  }
+}
+
+@media (pointer: coarse) {
+  :where(.switch) {
+    min-height: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.switch-track),
+  :where(.switch-track)::before {
+    transition: none;
+  }
+}

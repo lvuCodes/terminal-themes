@@ -14,6 +14,7 @@ describe("@lvucodes/ui public API", () => {
       "Card",
       "FilterBar",
       "FilterChip",
+      "Switch",
       "FooterCredits",
       "DEFAULT_OWNER",
       "DEFAULT_OWNER_HREF",

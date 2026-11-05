@@ -12,6 +12,7 @@ export { Select } from "./select";
 export { Collapsible, type CollapsibleProps } from "./collapsible";
 export { Card, type CardProps } from "./card";
 export { FilterBar, FilterChip, type FilterBarProps, type FilterChipProps } from "./filter-bar";
+export { Switch, type SwitchProps } from "./switch";
 export {
   FooterCredits,
   DEFAULT_OWNER,
