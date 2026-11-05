@@ -24,13 +24,16 @@ export function Switch({
   labelHidden = false,
   indeterminate = false,
   className,
+  onChange,
   ref,
   ...props
 }: SwitchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   useImperativeHandle(ref, () => inputRef.current!, []);
 
-  // indeterminate is a DOM property with no HTML attribute.
+  // indeterminate is a DOM property with no HTML attribute. A click clears it,
+  // so the change handler reapplies the prop even when the parent's update
+  // renders nothing new.
   useLayoutEffect(() => {
     inputRef.current!.indeterminate = indeterminate;
   }, [indeterminate]);
@@ -45,6 +48,10 @@ export function Switch({
         ref={inputRef}
         type="checkbox"
         role={indeterminate ? undefined : "switch"}
+        onChange={(event) => {
+          onChange?.(event);
+          event.currentTarget.indeterminate = indeterminate;
+        }}
         className="switch-input"
       />
       <span className="switch-track" aria-hidden="true" />

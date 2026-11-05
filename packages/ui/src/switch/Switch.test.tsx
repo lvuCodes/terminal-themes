@@ -74,6 +74,46 @@ describe("Switch", () => {
     expect((screen.getByRole("switch") as HTMLInputElement).indeterminate).toBe(false);
   });
 
+  it("stays indeterminate after a click the parent refuses", async () => {
+    render(<Switch label="All" checked={false} indeterminate onChange={() => {}} />);
+    const box = screen.getByRole("checkbox") as HTMLInputElement;
+    await userEvent.click(box);
+    expect(box.indeterminate).toBe(true);
+    expect(box.hasAttribute("role")).toBe(false);
+  });
+
+  it("stays indeterminate when the parent changes checked but keeps it partial", async () => {
+    const onChange = vi.fn();
+    function Harness() {
+      const [on, setOn] = useState(false);
+      return (
+        <Switch
+          label="All"
+          checked={on}
+          indeterminate
+          onChange={(e) => {
+            onChange();
+            setOn(e.target.checked);
+          }}
+        />
+      );
+    }
+    render(<Harness />);
+    const box = screen.getByRole("checkbox") as HTMLInputElement;
+    await userEvent.click(box);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(box.checked).toBe(true);
+    expect(box.indeterminate).toBe(true);
+  });
+
+  it("works uncontrolled without an onChange while indeterminate", async () => {
+    render(<Switch label="All" indeterminate />);
+    const box = screen.getByRole("checkbox") as HTMLInputElement;
+    await userEvent.click(box);
+    expect(box.checked).toBe(true);
+    expect(box.indeterminate).toBe(true);
+  });
+
   it("keeps the label for screen readers only when labelHidden", () => {
     const { container } = render(<Switch label="Alert" labelHidden />);
     expect(screen.getByRole("switch", { name: "Alert" })).toBeTruthy();
@@ -104,65 +144,117 @@ describe("Switch", () => {
 });
 
 describe("switch.css", () => {
+  const forced = css.slice(css.indexOf("@media (forced-colors: active)"));
+  const coarse = css.slice(css.indexOf("@media (pointer: coarse)"));
+  const reduced = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
+  const rem = (body: string, prop: string) =>
+    Number(new RegExp(`${prop}: (-?[\\d.]+)rem`).exec(body)![1]) * 16;
+
   it("keeps every selector at zero specificity so caller classes win", () => {
     const selectors = selectorsOf(css);
     expect(selectors.length).toBeGreaterThan(0);
     for (const s of selectors) expect(isSingleWhere(s), s).toBe(true);
   });
 
-  it("hides the native checkbox without removing it", () => {
-    const input = ruleBody(css, ":where(.switch-input)");
-    expect(input).toContain("opacity: 0");
-    expect(input).toContain("clip-path: inset(50%)");
-    expect(input).not.toContain("display: none");
+  it("hides the native checkbox and a hidden label without removing them", () => {
+    for (const selector of [":where(.switch-input)", ":where(.switch-label-hidden)"]) {
+      const body = ruleBody(css, selector);
+      expect(body, selector).toContain("position: absolute");
+      expect(body, selector).toContain("clip-path: inset(50%)");
+      expect(body, selector).not.toContain("display: none");
+    }
+    expect(ruleBody(css, ":where(.switch-input)")).toContain("opacity: 0");
   });
 
-  it("moves the knob right when on and to the centre when indeterminate", () => {
-    expect(ruleBody(css, ":where(.switch-input:checked + .switch-track)::before")).toContain(
-      "transform: translateX(1rem)",
-    );
-    expect(ruleBody(css, ":where(.switch-input:indeterminate + .switch-track)::before")).toContain(
-      "transform: translateX(0.5rem)",
-    );
+  it("centres the knob with equal gaps off, indeterminate, and on", () => {
+    const track = ruleBody(css, ":where(.switch-track)");
+    const knob = ruleBody(css, ":where(.switch-track)::before");
+    expect(track).toContain("box-sizing: border-box");
+    expect(track).toMatch(/border: 1px solid/);
+    const inside = rem(track, "width") - 2;
+    const insideHeight = rem(track, "height") - 2;
+    const size = rem(knob, "width");
+    const inset = rem(knob, "left");
+    expect(rem(knob, "height")).toBe(size);
+    expect(rem(knob, "top")).toBe(inset);
+    expect(insideHeight - size - inset).toBe(inset);
+    const shift = (selector: string) =>
+      Number(/translateX\(([\d.]+)rem\)/.exec(ruleBody(css, selector))![1]) * 16;
+    const on = shift(":where(.switch-input:checked + .switch-track)::before");
+    const half = shift(":where(.switch-input:indeterminate + .switch-track)::before");
+    expect(inside - size - inset - on).toBe(inset);
+    expect(half * 2).toBe(on);
   });
 
-  it("fills the on track with the accent and its contrast colour", () => {
-    expect(ruleBody(css, ":where(.switch-input:checked + .switch-track)")).toContain(
-      "background: var(--accent)",
-    );
-    expect(ruleBody(css, ":where(.switch-input:checked + .switch-track)::before")).toContain(
-      "background: var(--on-accent)",
-    );
+  it("fills on and indeterminate tracks with the accent and draws the knob in its contrast colour", () => {
+    expect(
+      ruleBody(
+        css,
+        ":where(.switch-input:checked + .switch-track),\n:where(.switch-input:indeterminate + .switch-track)",
+      ),
+    ).toContain("background: var(--accent)");
+    for (const state of ["checked", "indeterminate"]) {
+      expect(ruleBody(css, `:where(.switch-input:${state} + .switch-track)::before`)).toContain(
+        "background: var(--on-accent)",
+      );
+    }
   });
 
-  it("outlines the off track so it shows against the panel", () => {
-    expect(ruleBody(css, ":where(.switch-track)")).toContain("border: 1px solid var(--text)");
+  it("draws the off track as a --text-h outline and knob on the surface", () => {
+    const track = ruleBody(css, ":where(.switch-track)");
+    expect(track).toContain("border: 1px solid var(--text-h)");
+    expect(track).toContain("background: transparent");
+    expect(ruleBody(css, ":where(.switch-track)::before")).toContain("background: var(--text-h)");
+    expect(css).not.toMatch(/border-color: var\(--accent\)/);
   });
 
-  it("shows focus and disabled states", () => {
+  it("shows focus with --text-h and dims a disabled track without :has()", () => {
     expect(ruleBody(css, ":where(.switch-input:focus-visible + .switch-track)")).toContain(
-      "outline: 2px solid var(--accent)",
+      "outline: 2px solid var(--text-h)",
     );
-    const disabled = ruleBody(css, ":where(.switch:has(.switch-input:disabled))");
-    expect(disabled).toContain("opacity: 0.5");
-    expect(disabled).toContain("cursor: not-allowed");
+    expect(ruleBody(css, ":where(.switch-input:disabled + .switch-track)")).toContain(
+      "opacity: 0.5",
+    );
+    expect(ruleBody(css, ":where(.switch:has(.switch-input:disabled))")).toContain(
+      "cursor: not-allowed",
+    );
   });
 
   it("draws with system colours in forced-colors mode", () => {
-    const forced = css.slice(css.indexOf("@media (forced-colors: active)"));
     const track = ruleBody(forced, ":where(.switch-track)");
     expect(track).toContain("forced-color-adjust: none");
     expect(track).toContain("border-color: CanvasText");
     expect(ruleBody(forced, ":where(.switch-track)::before")).toContain("background: CanvasText");
+    expect(
+      ruleBody(
+        forced,
+        ":where(.switch-input:checked + .switch-track),\n  :where(.switch-input:indeterminate + .switch-track)",
+      ),
+    ).toContain("background: Highlight");
+    expect(
+      ruleBody(
+        forced,
+        ":where(.switch-input:checked + .switch-track)::before,\n  :where(.switch-input:indeterminate + .switch-track)::before",
+      ),
+    ).toContain("background: HighlightText");
+    expect(ruleBody(forced, ":where(.switch-input:disabled + .switch-track)")).toContain(
+      "border-color: GrayText",
+    );
+    expect(ruleBody(forced, ":where(.switch-input:disabled + .switch-track)::before")).toContain(
+      "background: GrayText",
+    );
   });
 
-  it("gives the switch a 44px touch target on coarse pointers", () => {
-    const coarse = css.slice(css.indexOf("@media (pointer: coarse)"));
-    expect(ruleBody(coarse, ":where(.switch)")).toContain("min-height: 2.75rem");
+  it("meets the 24px target everywhere and 44px on coarse pointers", () => {
+    expect(ruleBody(css, ":where(.switch)")).toContain("min-height: 1.5rem");
+    const touch = ruleBody(coarse, ":where(.switch)");
+    expect(touch).toContain("min-height: 2.75rem");
+    expect(touch).toContain("min-width: 2.75rem");
   });
 
-  it("drops the knob animation for reduced motion", () => {
-    const reduced = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
-    expect(reduced).toContain("transition: none");
+  it("drops the track and knob animations for reduced motion", () => {
+    expect(ruleBody(reduced, ":where(.switch-track),\n  :where(.switch-track)::before")).toContain(
+      "transition: none",
+    );
   });
 });

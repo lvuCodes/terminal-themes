@@ -2,12 +2,16 @@
    specificity and a caller's class overrides it regardless of stylesheet
    order. The native checkbox stays in the page, visually hidden, and the
    track after it draws the state. The knob's position carries the state as
-   well as the fill: left is off, right is on, centre is indeterminate. */
+   well as the fill: left is off, right is on, centre is indeterminate. The
+   track border and focus ring use --text-h, which clears 3:1 on every theme's
+   page and panel, where --accent does not. */
 :where(.switch) {
   position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  min-height: 1.5rem;
   color: var(--text);
   cursor: pointer;
 }
@@ -31,15 +35,17 @@
   white-space: nowrap;
 }
 
+/* 36 x 20 border-box with a 1px border leaves a 34 x 18 inside. The 14px knob
+   at a 2px inset moves 0, 8, or 16px, leaving 2px gaps and an exact centre. */
 :where(.switch-track) {
   position: relative;
   flex: none;
   box-sizing: border-box;
   width: 2.25rem;
   height: 1.25rem;
-  border: 1px solid var(--text);
+  border: 1px solid var(--text-h);
   border-radius: 999px;
-  background: var(--border);
+  background: transparent;
   transition: background-color 0.15s ease;
 }
 
@@ -55,8 +61,8 @@
   transition: transform 0.15s ease;
 }
 
-:where(.switch-input:checked + .switch-track) {
-  border-color: var(--accent);
+:where(.switch-input:checked + .switch-track),
+:where(.switch-input:indeterminate + .switch-track) {
   background: var(--accent);
 }
 
@@ -65,24 +71,22 @@
   transform: translateX(1rem);
 }
 
-:where(.switch-input:indeterminate + .switch-track) {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 50%, var(--border));
-}
-
 :where(.switch-input:indeterminate + .switch-track)::before {
-  background: var(--text-h);
+  background: var(--on-accent);
   transform: translateX(0.5rem);
 }
 
 :where(.switch-input:focus-visible + .switch-track) {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--text-h);
   outline-offset: 2px;
 }
 
 :where(.switch:has(.switch-input:disabled)) {
-  opacity: 0.5;
   cursor: not-allowed;
+}
+
+:where(.switch-input:disabled + .switch-track) {
+  opacity: 0.5;
 }
 
 @media (forced-colors: active) {
@@ -110,10 +114,21 @@
   :where(.switch-input:focus-visible + .switch-track) {
     outline-color: Highlight;
   }
+
+  :where(.switch-input:disabled + .switch-track) {
+    border-color: GrayText;
+    background: Canvas;
+    opacity: 1;
+  }
+
+  :where(.switch-input:disabled + .switch-track)::before {
+    background: GrayText;
+  }
 }
 
 @media (pointer: coarse) {
   :where(.switch) {
+    min-width: 2.75rem;
     min-height: 2.75rem;
   }
 }
