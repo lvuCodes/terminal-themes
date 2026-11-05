@@ -9,7 +9,6 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 0.5rem;
   min-height: 1.5rem;
   color: var(--text);
@@ -128,6 +127,7 @@
 
 @media (pointer: coarse) {
   :where(.switch) {
+    justify-content: center;
     min-width: 2.75rem;
     min-height: 2.75rem;
   }

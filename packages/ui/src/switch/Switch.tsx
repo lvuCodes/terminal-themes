@@ -9,6 +9,8 @@ import {
 } from "react";
 import "./switch.css";
 
+// className goes on the wrapping label; every other prop (checked, onChange,
+// name, aria-*, style) goes on the visually hidden checkbox.
 export interface SwitchProps extends Omit<ComponentProps<"input">, "type" | "role" | "children"> {
   // Visible label text, also the switch's accessible name.
   label: ReactNode;

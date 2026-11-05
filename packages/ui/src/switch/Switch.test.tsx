@@ -247,9 +247,11 @@ describe("switch.css", () => {
 
   it("meets the 24px target everywhere and 44px on coarse pointers", () => {
     expect(ruleBody(css, ":where(.switch)")).toContain("min-height: 1.5rem");
+    expect(ruleBody(css, ":where(.switch)")).not.toContain("justify-content");
     const touch = ruleBody(coarse, ":where(.switch)");
     expect(touch).toContain("min-height: 2.75rem");
     expect(touch).toContain("min-width: 2.75rem");
+    expect(touch).toContain("justify-content: center");
   });
 
   it("drops the track and knob animations for reduced motion", () => {
