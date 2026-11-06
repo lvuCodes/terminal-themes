@@ -21,9 +21,11 @@ function splitTopLevel(text: string) {
 }
 
 // Every selector in the sheet, with multi-line lists split into their parts and
-// at-rule preludes (@media, @supports) skipped.
+// at-rule preludes (@media, @supports) and @keyframes steps skipped.
 export function selectorsOf(source: string) {
-  const code = source.replace(/\/\*[\s\S]*?\*\//g, "");
+  const code = source
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/@keyframes[^{]*\{(?:[^{}]*\{[^{}]*\})*\s*\}/g, "");
   return code.split("}").flatMap((chunk) => {
     const open = chunk.lastIndexOf("{");
     if (open < 0) return [];

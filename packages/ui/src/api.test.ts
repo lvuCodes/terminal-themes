@@ -15,6 +15,8 @@ describe("@lvucodes/ui public API", () => {
       "FilterBar",
       "FilterChip",
       "Switch",
+      "SaveStatus",
+      "SAVE_STATUS_DEFAULT_LABELS",
       "FooterCredits",
       "DEFAULT_OWNER",
       "DEFAULT_OWNER_HREF",

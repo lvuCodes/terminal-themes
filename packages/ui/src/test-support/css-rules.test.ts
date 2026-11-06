@@ -8,6 +8,12 @@ describe("css-rules test helpers", () => {
     expect(selectorsOf(sheet)).toEqual([".a", ":where(.b)", ":where(.c)"]);
   });
 
+  it("skips the steps inside @keyframes blocks", () => {
+    const sheet =
+      ":where(.a) { gap: 0; }\n@keyframes spin {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}\n:where(.b) { gap: 0; }";
+    expect(selectorsOf(sheet)).toEqual([":where(.a)", ":where(.b)"]);
+  });
+
   it("accepts one whole :where() group, optionally with a pseudo-element", () => {
     expect(isSingleWhere(":where(.a:not([b], [c]))")).toBe(true);
     expect(isSingleWhere(":where(.a)::before")).toBe(true);
