@@ -1,0 +1,85 @@
+/* Reset button. Every selector sits inside :where(), so the skin has zero
+   specificity and a caller's class overrides it regardless of stylesheet
+   order. The armed state changes the button's words and doubles its border
+   width, so it never relies on colour alone. Both labels share one grid cell
+   and the hidden one keeps its space, so the button never changes size. The
+   single column is as wide as the button, so the status wraps under it. */
+:where(.reset-button) {
+  display: inline-grid;
+  grid-template-columns: max-content;
+  justify-content: start;
+  max-width: 100%;
+}
+
+:where(.reset-button-control) {
+  box-sizing: border-box;
+  display: inline-grid;
+  align-items: center;
+  min-height: 1.5rem;
+  border: 1px solid var(--text-h);
+  border-radius: 6px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  padding: 0.25rem 0.75rem;
+  font: inherit;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+:where(.reset-button-label) {
+  grid-area: 1 / 1;
+}
+
+:where(.reset-button-label[aria-hidden="true"]) {
+  visibility: hidden;
+}
+
+:where(.reset-button-control:hover) {
+  filter: brightness(1.12);
+}
+
+:where(.reset-button-control:focus-visible) {
+  outline: 2px solid var(--text-h);
+  outline-offset: 2px;
+}
+
+:where(.reset-button-armed) {
+  border: 2px solid var(--text-h);
+  padding: calc(0.25rem - 1px) calc(0.75rem - 1px);
+}
+
+:where(.reset-button-control:disabled) {
+  opacity: 0.5;
+  filter: none;
+  cursor: not-allowed;
+}
+
+:where(.reset-button-status) {
+  width: 0;
+  min-width: 100%;
+  min-height: 1.5em;
+  margin-top: 0.25rem;
+  color: var(--text-h);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+@media (forced-colors: active) {
+  :where(.reset-button-armed) {
+    border-color: Highlight;
+  }
+
+  :where(.reset-button-control:disabled) {
+    border-color: GrayText;
+    color: GrayText;
+    opacity: 1;
+  }
+}
+
+@media (pointer: coarse) {
+  :where(.reset-button-control) {
+    min-height: 2.75rem;
+  }
+}

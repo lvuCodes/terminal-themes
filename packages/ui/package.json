@@ -1,7 +1,7 @@
 {
   "name": "@lvucodes/ui",
   "version": "0.1.2",
-  "description": "Shared UI for the lvucodes.github.io sites: terminal theme palettes, theme switcher, back link, footer credits, select, collapsible, card, filter bar, switch, save status, and the shared lint configs.",
+  "description": "Shared UI for the lvucodes.github.io sites: terminal theme palettes, theme switcher, back link, footer credits, select, collapsible, card, filter bar, switch, save status, reset button, and the shared lint configs.",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "repository": {

@@ -17,6 +17,7 @@ describe("@lvucodes/ui public API", () => {
       "Switch",
       "SaveStatus",
       "SAVE_STATUS_DEFAULT_LABELS",
+      "ResetButton",
       "FooterCredits",
       "DEFAULT_OWNER",
       "DEFAULT_OWNER_HREF",

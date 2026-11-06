@@ -19,6 +19,7 @@ export {
   type SaveState,
   type SaveStatusProps,
 } from "./save-status";
+export { ResetButton, type ResetButtonProps } from "./reset-button";
 export {
   FooterCredits,
   DEFAULT_OWNER,
