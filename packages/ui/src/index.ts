@@ -20,6 +20,7 @@ export {
   type SaveStatusProps,
 } from "./save-status";
 export { ResetButton, type ResetButtonProps } from "./reset-button";
+export { NumberStepper, type NumberStepperProps } from "./number-stepper";
 export {
   FooterCredits,
   DEFAULT_OWNER,

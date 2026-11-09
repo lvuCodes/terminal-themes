@@ -1,0 +1,85 @@
+/* Number stepper. Every selector sits inside :where(), so the skin has zero
+   specificity and a caller's class overrides it regardless of stylesheet
+   order. A button at its bound is dimmed and shows a not-allowed cursor, and
+   its aria-disabled state is announced, so the bound never relies on colour.
+   The count uses tabular digits and reserves the width of its longest value.
+   The live line is visually hidden and only speaks after a press. */
+:where(.number-stepper) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+:where(.number-stepper-button) {
+  box-sizing: border-box;
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  border: 1px solid var(--text-h);
+  border-radius: 6px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  padding: 0 0.25rem;
+  font: inherit;
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+:where(.number-stepper-button:hover) {
+  filter: brightness(1.12);
+}
+
+:where(.number-stepper-button:focus-visible) {
+  outline: 2px solid var(--text-h);
+  outline-offset: 2px;
+}
+
+:where(.number-stepper-button[aria-disabled="true"]) {
+  opacity: 0.5;
+  filter: none;
+  cursor: not-allowed;
+}
+
+:where(.number-stepper-value) {
+  min-width: calc(var(--number-stepper-chars, 2) * 1ch);
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+:where(.number-stepper[aria-disabled="true"] .number-stepper-value) {
+  opacity: 0.5;
+}
+
+:where(.number-stepper-live) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (forced-colors: active) {
+  :where(.number-stepper-button[aria-disabled="true"]) {
+    border-color: GrayText;
+    color: GrayText;
+    opacity: 1;
+  }
+
+  :where(.number-stepper[aria-disabled="true"] .number-stepper-value) {
+    color: GrayText;
+    opacity: 1;
+  }
+}
+
+@media (pointer: coarse) {
+  :where(.number-stepper-button) {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+}
