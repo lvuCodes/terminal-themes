@@ -4,9 +4,9 @@
 
 | Measure | Lines added |
 |---|---|
-| **By Claude** | 4,003 |
+| **By Claude** | 4,429 |
 | **By the author** | 0 |
-| **Total since baseline** | 4,003 |
+| **Total since baseline** | 4,429 |
 
 Baseline commit `6d61098` (2026-10-30). Regenerate with `node scripts/ai-attribution.mjs`.
 
@@ -30,4 +30,4 @@ Baseline commit `6d61098` (2026-10-30). Regenerate with `node scripts/ai-attribu
 - `AI-USAGE.md`
 - `.ai-attribution/**`
 
-_Generated 2026-11-09 16:41:32Z.
+_Generated 2026-11-10 02:54:55Z.
