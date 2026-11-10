@@ -1,0 +1,56 @@
+/* Tabs. Every selector sits inside :where(), so the skin has zero specificity
+   and a caller's class overrides it regardless of stylesheet order. The
+   selected tab has a 4px bottom border in place of 1px, with the padding
+   reduced to match, so selection never relies on colour and tabs never change
+   size. Tabs wrap onto further lines on a narrow screen. */
+:where(.tabs-list) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+:where(.tabs-tab) {
+  box-sizing: border-box;
+  min-height: 1.5rem;
+  border: 1px solid var(--text-h);
+  border-radius: 6px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  padding: 0.25rem 0.75rem;
+  font: inherit;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+:where(.tabs-tab:hover) {
+  filter: brightness(1.12);
+}
+
+:where(.tabs-tab:focus-visible, .tabs-panel:focus-visible) {
+  outline: 2px solid var(--text-h);
+  outline-offset: 2px;
+}
+
+:where(.tabs-tab[aria-selected="true"]) {
+  border-bottom-width: 4px;
+  padding-bottom: calc(0.25rem - 3px);
+  background: var(--panel);
+}
+
+:where(.tabs-panel) {
+  margin-top: 1rem;
+}
+
+@media (forced-colors: active) {
+  :where(.tabs-tab[aria-selected="true"]) {
+    border-color: Highlight;
+  }
+}
+
+@media (pointer: coarse) {
+  :where(.tabs-tab) {
+    min-height: 2.75rem;
+  }
+}

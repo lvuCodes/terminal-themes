@@ -21,6 +21,7 @@ export {
 } from "./save-status";
 export { ResetButton, type ResetButtonProps } from "./reset-button";
 export { NumberStepper, type NumberStepperProps } from "./number-stepper";
+export { Tabs, type TabItem, type TabsProps } from "./tabs";
 export {
   FooterCredits,
   DEFAULT_OWNER,
