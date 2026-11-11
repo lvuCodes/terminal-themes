@@ -20,6 +20,8 @@ describe("@lvucodes/ui public API", () => {
       "ResetButton",
       "NumberStepper",
       "Tabs",
+      "AboutPanel",
+      "AboutList",
       "FooterCredits",
       "DEFAULT_OWNER",
       "DEFAULT_OWNER_HREF",

@@ -23,6 +23,14 @@ export { ResetButton, type ResetButtonProps } from "./reset-button";
 export { NumberStepper, type NumberStepperProps } from "./number-stepper";
 export { Tabs, type TabItem, type TabsProps } from "./tabs";
 export {
+  AboutList,
+  AboutPanel,
+  type AboutListItem,
+  type AboutListProps,
+  type AboutPanelProps,
+  type AboutSection,
+} from "./about-panel";
+export {
   FooterCredits,
   DEFAULT_OWNER,
   DEFAULT_OWNER_HREF,
