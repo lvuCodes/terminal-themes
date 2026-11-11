@@ -55,3 +55,4 @@
 {"ts":"2026-11-03T12:59:30-06:00","file":"packages/ui/src/test-support/css-rules.test.ts","tool":"Edit","added":3,"removed":0,"head":"de74b40","session":"0dfe7e21-266b-4920-b7c2-d34013d7c2fd","kind":"code","snapshot":null}
 {"ts":"2026-11-03T13:54:32-06:00","file":"packages/ui/src/collapsible/collapsible.css","tool":"Edit","added":6,"removed":0,"head":"fd6296e","session":"0dfe7e21-266b-4920-b7c2-d34013d7c2fd","kind":"code","snapshot":null}
 {"ts":"2026-11-09T20:48:25-06:00","file":"packages/ui/src/tabs/Tabs.test.tsx","tool":"Write","added":228,"removed":0,"head":"f54c2d3","session":"0dfe7e21-266b-4920-b7c2-d34013d7c2fd","kind":"code","snapshot":null}
+{"ts":"2026-11-10T07:02:34-06:00","file":"packages/ui/src/about-panel/AboutPanel.test.tsx","tool":"Write","added":156,"removed":0,"head":"c6c9dc3","session":"0dfe7e21-266b-4920-b7c2-d34013d7c2fd","kind":"code","snapshot":null}
