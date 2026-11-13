@@ -38,4 +38,26 @@ describe("FooterCredits", () => {
     expect(container.textContent).toContain("MIT");
     expect(container.querySelector(`a[href="/o"]`)).toBeTruthy();
   });
+
+  it("renders no repository link when repoHref is omitted", () => {
+    const { container } = render(<FooterCredits licenseHref="/LICENSE" />);
+    expect(container.querySelectorAll("footer.credits a")).toHaveLength(2);
+  });
+
+  it("links the repository inside the copyright line after the licence", () => {
+    const { container } = render(
+      <FooterCredits licenseHref="/LICENSE" repoHref="/repo" repoLabel="repo-name on GitHub" />,
+    );
+    const line = container.querySelector(".credits-copyright")!;
+    const links = [...line.querySelectorAll("a")];
+    expect(links.map((a) => a.getAttribute("href"))).toEqual([
+      DEFAULT_OWNER_HREF,
+      "/LICENSE",
+      "/repo",
+    ]);
+    const repo = links[2];
+    expect(repo.textContent).toBe("repo-name on GitHub");
+    expect(repo.getAttribute("rel")).toBe("noreferrer noopener");
+    expect(repo.getAttribute("target")).toBe("_blank");
+  });
 });

@@ -19,6 +19,7 @@ export {
   naturalAnsiMode,
   loadTheme,
   saveTheme,
+  seedDefaultTheme,
   isThemeId,
   type AnsiMode,
   type ThemeId,

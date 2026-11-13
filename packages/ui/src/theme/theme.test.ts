@@ -7,6 +7,7 @@ import {
   isThemeId,
   loadTheme,
   saveTheme,
+  seedDefaultTheme,
 } from "./theme";
 
 // The default vitest env is node — no window/localStorage/document. We stub
@@ -105,5 +106,37 @@ describe("applyTheme", () => {
 
     expect(root.dataset.theme).toBe("red-sands");
     expect(store.get(THEME_STORAGE_KEY)).toBe("red-sands");
+  });
+});
+
+describe("seedDefaultTheme", () => {
+  it("seeds lvucodes into an empty slot", () => {
+    const store = stubStorage();
+    seedDefaultTheme();
+    expect(store.get(THEME_STORAGE_KEY)).toBe("lvucodes");
+  });
+
+  it("seeds the given theme and replaces an invalid stored value", () => {
+    const store = stubStorage({ [THEME_STORAGE_KEY]: "not-a-theme" });
+    seedDefaultTheme("ocean");
+    expect(store.get(THEME_STORAGE_KEY)).toBe("ocean");
+  });
+
+  it("keeps a valid choice made on another site", () => {
+    const store = stubStorage({ [THEME_STORAGE_KEY]: "pro" });
+    seedDefaultTheme();
+    expect(store.get(THEME_STORAGE_KEY)).toBe("pro");
+  });
+
+  it("treats unreadable storage as empty and does not throw", () => {
+    vi.stubGlobal("localStorage", {
+      getItem: () => {
+        throw new Error("blocked");
+      },
+      setItem: () => {
+        throw new Error("blocked");
+      },
+    });
+    expect(() => seedDefaultTheme()).not.toThrow();
   });
 });

@@ -4,6 +4,7 @@ import "./footer-credits.css";
 
 // Footer credits bar. Names the author and links the hosting repo's own
 // licence, so each consuming site passes the URL of its own LICENSE file.
+// An optional repoHref adds a link to the consuming project's own source.
 export const DEFAULT_OWNER = "lvuCodes";
 export const DEFAULT_OWNER_HREF = "https://github.com/lvuCodes";
 export const DEFAULT_LICENSE_LABEL = "GNU GPL v3";
@@ -13,12 +14,16 @@ export function FooterCredits({
   licenseLabel = DEFAULT_LICENSE_LABEL,
   owner = DEFAULT_OWNER,
   ownerHref = DEFAULT_OWNER_HREF,
+  repoHref,
+  repoLabel = "Source code",
   year = new Date().getFullYear(),
 }: {
   licenseHref: string;
   licenseLabel?: string;
   owner?: string;
   ownerHref?: string;
+  repoHref?: string;
+  repoLabel?: string;
   year?: number;
 }) {
   return (
@@ -33,6 +38,15 @@ export function FooterCredits({
           {licenseLabel}
         </a>
         .
+        {repoHref && (
+          <>
+            {" "}
+            <a href={repoHref} target="_blank" rel="noreferrer noopener">
+              {repoLabel}
+            </a>
+            .
+          </>
+        )}
       </p>
     </footer>
   );

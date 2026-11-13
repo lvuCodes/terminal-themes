@@ -71,6 +71,20 @@ export function saveTheme(theme: ThemeId): void {
   }
 }
 
+// Seed a site's default theme for first-time visitors while respecting an
+// existing choice. The storage key is shared across every site on the origin,
+// so a visitor who already picked a theme elsewhere keeps it; only an empty,
+// invalid, or unreadable slot is set before useTheme() reads it.
+export function seedDefaultTheme(theme: ThemeId = "lvucodes"): void {
+  let stored: string | null;
+  try {
+    stored = localStorage.getItem(THEME_STORAGE_KEY);
+  } catch {
+    stored = null;
+  }
+  if (!isThemeId(stored)) saveTheme(theme);
+}
+
 // Apply a theme to the document by setting <html data-theme>, which the
 // [data-theme] blocks in themes.css key off, then persist the choice.
 export function applyTheme(theme: ThemeId): void {
