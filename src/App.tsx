@@ -69,6 +69,8 @@ function App() {
 
       <FooterCredits
         licenseHref="https://github.com/lvuCodes/terminal-themes/blob/main/LICENSE"
+        repoHref="https://github.com/lvuCodes/terminal-themes"
+        repoLabel="terminal-themes on GitHub"
         year={2026}
       />
     </main>

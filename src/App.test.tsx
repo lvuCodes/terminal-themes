@@ -62,7 +62,9 @@ describe("App", () => {
     expect(links.map((a) => a.getAttribute("href"))).toEqual([
       "https://github.com/lvuCodes",
       "https://github.com/lvuCodes/terminal-themes/blob/main/LICENSE",
+      "https://github.com/lvuCodes/terminal-themes",
     ]);
+    expect(links[2].textContent).toBe("terminal-themes on GitHub");
     for (const a of links) {
       expect(a.getAttribute("rel")).toBe("noreferrer noopener");
       expect(a.getAttribute("target")).toBe("_blank");

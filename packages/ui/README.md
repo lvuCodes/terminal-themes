@@ -33,6 +33,8 @@ function App() {
 }
 ```
 
+`FooterCredits` takes an optional `repoHref` (with `repoLabel`, default "Source code") that adds a link to the project's own repository inside the copyright line, after the licence sentence. Name the repository in the label (`"<repo> on GitHub"`) so it reads apart from the owner link. Omitting `repoHref` renders the footer unchanged.
+
 The token contract (`--bg`, `--panel`, `--text`, `--accent`, `--item-0…10`, the ANSI slots) is documented in [the theme module README](https://github.com/lvuCodes/terminal-themes/blob/main/packages/ui/src/theme/README.md). `BackLink` renders at `position: absolute; top: 20px; left: 20px` against the document, so the page needs no positioned wrapper.
 
 Lint config wiring in a consumer:
